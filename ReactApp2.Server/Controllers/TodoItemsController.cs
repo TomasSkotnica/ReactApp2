@@ -140,7 +140,19 @@ namespace ReactApp1.Server.Controllers
         }
 
         // POST: api/TodoItems
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<TodoItem>> TodoItems(TodoItem todoItem)
+        //{
+        //    if (!this.TodoItemIsValid(todoItem))
+        //        return BadRequest("Item to insert is not valid. Item was not added.");
+
+        //    _context.TodoItems.Add(todoItem);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction("PostTodoItem", new { id = todoItem.Id }, todoItem);
+        //}
+
+        // POST: api/TodoItems
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
         {
