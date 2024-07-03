@@ -2,12 +2,6 @@ import { useEffect, useState } from 'react';
 import RefreshContactsButton from './RefreshContactsButton.tsx';
 import './App.css';
 
-interface Forecast {
-    date: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
-}
 interface Contact {
     id: number;
     name: string;
@@ -17,28 +11,17 @@ interface Contact {
 }
 
 function App() {
-    const [forecasts, setForecasts] = useState<Forecast[]>();
 
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
-
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table></table>;
-
-    const handleSubmit = async (event: { preventDefault: () => void; }) => {
-        event.preventDefault();
-
+    const handleSubmit = async () => {
         const data = {
             id: 0,
-            name: "hardcoded Name",
+            name: document.getElementById('add-name').value.trim(),
             surname: "hc-surname",
             email: "w.@w.cz",
             phone: "123"
         };
 
-        const response = await fetch('https://localhost:7191/api/TodoItems', {
+        const response = await fetch('api/TodoItems', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -48,6 +31,7 @@ function App() {
 
         const result = await response.json();
         console.log(result);
+        populateContactData();
     };
 
     const [contacts, setContacts] = useState<Contact[]>();
@@ -96,7 +80,7 @@ function App() {
             <RefreshContactsButton onClickH={populateContactData}></RefreshContactsButton>
             {kontaktyMoje}
             {kontakty}
-            <h1 id="tabelLabel">Weather forecast</h1>
+            <h1 id="tabelLabel">Kontakty</h1>
         </div>
     );
 
@@ -104,11 +88,6 @@ function App() {
         const response = await fetch('api/TodoItems');
         const data = await response.json();
         setContacts(data);
-    }
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        setForecasts(data);
     }
 }
 
