@@ -42,6 +42,12 @@ namespace ReactApp1.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
         {
+            // to filter, call 'api/TodoItems?name=tom'
+            string name = HttpContext.Request.Query["name"];
+            if (!string.IsNullOrEmpty(name))
+            {
+                return await _context.TodoItems.Where(t => t.Name != null && t.Name.Contains(name)).ToListAsync();
+            }
             return await _context.TodoItems.ToListAsync();
         }
 
