@@ -5,7 +5,7 @@
     <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
     <!-- Allows the build (or compile) script located on package.json to run on Build -->
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
-    <!-- Folder where production build objects will be placed -->
+    <!-- Folder where production build objects will be placed. // MSBuildProjectDirectory	- The absolute path of the directory where the project file is located, for example C:\MyCompany\MyProduct.  Do not include the final backslash on this property.C:\S -->
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
   </PropertyGroup>
 </Project>

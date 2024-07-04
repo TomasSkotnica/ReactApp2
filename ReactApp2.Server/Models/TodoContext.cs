@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ReactApp1.Server.Models;
+namespace ReactApp2.Server.Models;
 
 public class TodoContext : DbContext
 {

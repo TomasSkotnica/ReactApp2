@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using ReactApp1.Server.Helpers;
-using ReactApp1.Server.Models;
+using ReactApp2.Server.Helpers;
+using ReactApp2.Server.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<TodoContext>(opt =>
     opt.UseInMemoryDatabase("TodoList"));
+builder.Services.AddDbContext<PSRContext>(opt =>
+    opt.UseInMemoryDatabase("PSRList"));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<CsvSerializer>();

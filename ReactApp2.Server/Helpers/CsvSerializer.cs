@@ -5,10 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using ReactApp1.Server.Controllers;
-using ReactApp1.Server.Models;
+using ReactApp2.Server.Controllers;
+using ReactApp2.Server.Models;
 
-namespace ReactApp1.Server.Helpers
+namespace ReactApp2.Server.Helpers
 {
 
     public class CsvSerializer : ICvsSerializer
@@ -57,10 +57,10 @@ namespace ReactApp1.Server.Helpers
             return result;
         }
 
-        public void SaveToCsv(List<ReactApp1.Server.Models.TodoItem> items, string filePath)
+        public void SaveToCsv(List<ReactApp2.Server.Models.TodoItem> items, string filePath)
         {
             // Get the properties of the type T
-            PropertyInfo[] properties = typeof(ReactApp1.Server.Models.TodoItem).GetProperties();
+            PropertyInfo[] properties = typeof(ReactApp2.Server.Models.TodoItem).GetProperties();
 
             StringBuilder csvData = new StringBuilder();
 

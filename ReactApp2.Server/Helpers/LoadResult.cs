@@ -1,4 +1,4 @@
-﻿namespace ReactApp1.Server.Helpers
+﻿namespace ReactApp2.Server.Helpers
 {
     public class LoadResult
     {
