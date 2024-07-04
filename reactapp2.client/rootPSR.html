@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>title is: page for Patchset request experiments -root</title>
+</head>
+<body>
+    <div>
+        <label for="gen">select generation:</label>
+        <select id="gen" name="gen" onchange="onGenChange(1)">
+            <!--  multiple size="3"-->
+            <option value="1">Forms</option>
+            <option value="3">Desktop</option>
+            <option value="7">Web</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="release">select release:</label>
+        <select id="release" name="release"></select>
+    </div>
+
+    <script type="text/javascript">
+        function onGenChange(selectedValue) {
+            //const inputElement = document.getElementById('filter-name');
+            //const inputValue = inputElement.value;
+            console.log("passed value is " + selectedValue);
+            //fetch('api/PSRItems/filter?gen=' + selectedValue)
+            const bbb = document.getElementById('gen');
+            console.log("toms arg is " + bbb);
+            fetch('https://localhost:7208/api/PSRItems/1')
+                .then(response => response.json())
+                .then(data => fillReleases(data))
+                .catch(error => console.error('Unable to filter items.', error));
+        }
+
+        function fillReleases(data) {
+            console.log(data);
+            const releases = document.getElementById('release');
+            releases.innerHTML = '';
+
+            //const button = document.createElement('button');
+
+            data.forEach(item => {
+                var option = document.createElement('option');
+                option.value = item.value;
+                option.textContent = item.text;
+                releases.appendChild(option);
+            }
+            );
+        }
+
+    </script>
+
+</body>
+</html>

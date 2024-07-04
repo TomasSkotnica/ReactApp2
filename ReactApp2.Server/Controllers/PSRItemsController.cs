@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ReactApp2.Server.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -20,6 +21,7 @@ namespace ReactApp2.Server.Controllers
             _logger.LogInformation(1234, $"Tomas message to Debug console: PSRsimplesController constructor is starting ...");
             _context = context;
         }
+
         // GET: api/<PsrrwactionsController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -27,11 +29,22 @@ namespace ReactApp2.Server.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<PsrrwactionsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("filter")]
+        public IEnumerable<string> Get2()
         {
-            return "value";
+            string gen = HttpContext.Request.Query["gen"];
+            if (string.IsNullOrEmpty(gen)) { gen = string.Empty; }
+            return new string[] { "20.0.1", "20.0.2" };
+            // return await _context.PSRitems.Where(t => t.Gen != null && t.Gen.Equals(gen)).ToListAsync();
+        }
+
+        // GET api/<PsrrwactionsController>/5
+        // now used to get releases by given id of generation
+        [HttpGet("{id}")]
+        public IEnumerable<string> Get(int id)
+        {
+            _logger.LogInformation($"Get got generation {id}");
+            return new string[] { "20.0.1", "20.0.2" };
         }
 
         // POST api/<PsrrwactionsController>
