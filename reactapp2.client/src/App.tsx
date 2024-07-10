@@ -79,7 +79,7 @@ function App() {
     async function handG(event) {
         const data = event.target.value;
         console.log("passed value is " + data);
-        const response = await fetch('api/TodoItems/releases');
+        const response = await fetch('api/PsrItems/releases');
         const result = await response.json();
         console.log(result);
         setReleases(result);

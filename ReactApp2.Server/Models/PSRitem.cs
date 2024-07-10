@@ -1,6 +1,6 @@
 ﻿namespace ReactApp2.Server.Models;
 
-public class PSRitem
+public class PsrItem
 {
     public string Gen { get; set; }
     public string Release { get; set; }

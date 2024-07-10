@@ -29,6 +29,12 @@ namespace ReactApp2.Server.Controllers
             return new string[] { "value1", "value2" };
         }
 
+        [HttpGet("releases")]
+        public async Task<ActionResult<IEnumerable<string>>> GetReleases()
+        {
+            return new string[] { "21.0.1", "20.0.2" };
+        }
+
         [HttpGet("filter")]
         public IEnumerable<string> Get2()
         {

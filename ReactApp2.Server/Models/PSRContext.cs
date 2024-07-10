@@ -9,5 +9,5 @@ public class PSRContext : DbContext
     {
     }
 
-    public DbSet<PSRitem> PSRitems { get; set; } = null!;
+    public DbSet<PsrItem> PsrItems { get; set; } = null!;
 }
