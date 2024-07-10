@@ -29,7 +29,11 @@
             //fetch('api/PSRItems/filter?gen=' + selectedValue)
             const bbb = document.getElementById('gen');
             console.log("toms arg is " + bbb);
-            fetch('https://localhost:7208/api/PSRItems/1')
+            // curl -X 'GET' 'https://localhost:7208/api/PSRItems/1' -H 'accept: text/plain'
+            //const dot = 'https://localhost:5173/api/PSRItems';
+            const dot = 'https://localhost:7208/api/PSRItems';
+            console.log(dot);
+            fetch(dot)
                 .then(response => response.json())
                 .then(data => fillReleases(data))
                 .catch(error => console.error('Unable to filter items.', error));

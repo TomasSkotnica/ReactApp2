@@ -97,6 +97,13 @@ namespace ReactApp2.Server.Controllers
             return await _context.TodoItems.Where(t => t.Name != null && t.Name.Contains(name)).ToListAsync();
         }
 
+        // GET: api/TodoItems
+        [HttpGet("releases")]
+        public async Task<ActionResult<IEnumerable<string>>> GetReleases()
+        {
+            return new string[] { "20.0.1", "20.0.2" };
+        }
+
         // GET: api/TodoItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(long id)

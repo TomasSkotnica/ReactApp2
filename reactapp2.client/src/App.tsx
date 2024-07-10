@@ -44,7 +44,7 @@ function App() {
         <form action="javascript:void(0);" method="POST" onSubmit={handleSubmit}>
             <p>
                 <label>Name</label>
-                <input type="text" id="add-name" />
+                <input type="text" id="add-name" placeholder="new name to add"/>
             </p>
             <input type="submit" id="add-button" value="Add" />
         </form>;
@@ -75,8 +75,41 @@ function App() {
             </tbody>
         </table>;
 
+    const [releases, setReleases] = useState(["xxxxxxxx"]);
+    async function handG(event) {
+        const data = event.target.value;
+        console.log("passed value is " + data);
+        const response = await fetch('api/TodoItems/releases');
+        const result = await response.json();
+        console.log(result);
+        setReleases(result);
+        //setReleases(["20.0.1", "20.0.2"]);
+    };
+
+    const relItems = 
+        releases.map((item) => <option value={item}>{item}</option>);    
+
+    const psr = <div>
+            <div>
+                <label for="gen">select generation:</label>
+                <select id="gen" name="gen" onChange={handG}>
+                    <option value="1">Forms</option>
+                    <option value="3">Desktop</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="release">select release:</label>
+            <select id="release" name="release">
+                {relItems}
+            </select>
+            </div>
+        </div>;
+
+
     return (
         <div>
+            {psr}
         <a href="./rootPSR.html">Patchset request page</a>
             <RefreshContactsButton onClickH={populateContactData}></RefreshContactsButton>
             {kontaktyMoje}
@@ -86,6 +119,9 @@ function App() {
     );
 
     async function populateContactData() {
+        //const re = await fetch('api/PSRItems/1');
+        //const aa = await re.json();
+        //console.log(aa);
         const response = await fetch('api/TodoItems');
         const data = await response.json();
         setContacts(data);
