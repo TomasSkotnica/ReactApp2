@@ -1,0 +1,44 @@
+.input-label {
+    width: 100px;
+    text-align:left;
+}
+.input-name {
+    width: 250px;
+    background-color:aqua;
+}
+.input-email {
+    width: 500px;
+    object-fit:fill;
+}
+.contact-item {
+    
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.input-group-fixed {
+    position: fixed; /* Fixes the position to the top of the page */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f8f8f8; /* Light background color for the input area */
+    padding: 3px;
+    display: flex;
+    justify-content: space-around; /* Spaces the input elements evenly */
+}
+
+    .input-group input {
+        padding: 5px;
+        font-size: 16px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        /*width: 250px; /* Adjust width as needed */
+    }
+
+        .input-group input::placeholder {
+            color: #aaa;
+        }

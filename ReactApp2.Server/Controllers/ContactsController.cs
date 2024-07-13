@@ -80,7 +80,7 @@ namespace ReactApp2.Server.Controllers
             _context.Contacts.Add(contact);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetContact", new { id = contact.Id }, contact);
+            return CreatedAtAction("PostContact", new { id = contact.Id }, contact);
         }
 
         // DELETE: api/Contacts/5

@@ -49,6 +49,14 @@ export default defineConfig({
             '^/api/TodoItems': {
                 target: 'https://localhost:7208/',
                 secure: false
+            },
+            '^/api/Contacts': {
+                target: 'https://localhost:7208/',
+                secure: false
+            },
+            '^/api/PSRItems': {
+                target: 'https://localhost:7208/',
+                secure: false
             }
         },
         port: 5173,
