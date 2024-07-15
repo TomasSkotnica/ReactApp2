@@ -1,0 +1,7 @@
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block; /* or inline, inline-block, etc., depending on your layout */
+}

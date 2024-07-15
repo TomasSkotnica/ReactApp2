@@ -35,10 +35,24 @@ namespace ReactApp2.Server.Controllers
             return new string[] { "21.0.1", "20.0.2" };
         }
 
-        [HttpGet("releases")]
-        public async Task<ActionResult<IEnumerable<string>>> GetReleases()
+        [HttpGet("releases/{gen}")]
+        public async Task<ActionResult<IEnumerable<string>>> GetReleases(string gen)
         {
-            return new string[] { "21.0.1", "20.0.2" };
+            if (gen == "1")
+                return new string[] { "21.0.5", "20.0.5" };
+            else
+                return new string[] { "21.0.1", "20.0.2" };
+        }
+
+        [HttpGet("spacks/{rel}")]
+        public async Task<ActionResult<IEnumerable<string>>> GetSpacks(string rel)
+        {
+            if (rel == "20.0.5")
+                return new string[] { "20.0.5-0100", "20.0.5-0120" };
+            else if (rel == "20.0.2")
+                return new string[] { "20.0.2-0010", "20.0.2-0020" };
+            else
+                return new string[] { };
         }
 
         [HttpGet("filter")]
