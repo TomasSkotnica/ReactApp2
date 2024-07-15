@@ -20,19 +20,26 @@ namespace ReactApp2.Server.Controllers
             _logger = logger;
             _logger.LogInformation(1234, $"Tomas message to Debug console: PSRsimplesController constructor is starting ...");
             _context = context;
+            HardCodeInit();
         }
 
-        // GET: api/<PsrrwactionsController>
+        private async void HardCodeInit() 
+        {
+            _context.PsrItems.Add(new PsrItem { Gen = "Forms", Release = "15.0.5", Patchset = "15.0.5-0100", UnixBuild = false });
+            _context.PsrItems.Add(new PsrItem { Gen = "Forms", Release = "15.0.5", Patchset = "15.0.5-0120", UnixBuild = false });
+            _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "20.0.0", Patchset = "20.0.0-0010", UnixBuild = false });
+            _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "20.0.0", Patchset = "20.0.0-0020", UnixBuild = false });
+            _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "20.0.0", Patchset = "20.0.0-0030", UnixBuild = false });
+            _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "21.0.0", Patchset = "21.0.0-0010", UnixBuild = true });
+            if (_context.PsrItems.FirstOrDefault() == null)
+                await _context.SaveChangesAsync();
+
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<IEnumerable<PsrItem>>> Get()
         {
-            return new string[] { "value1", "value2" };
-        }
-
-        [HttpPost("releases")]
-        public async Task<ActionResult<IEnumerable<string>>> PostReleases()
-        {
-            return new string[] { "21.0.1", "20.0.2" };
+            return await _context.PsrItems.ToListAsync();
         }
 
         [HttpGet("releases/{gen}")]

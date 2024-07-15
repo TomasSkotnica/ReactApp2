@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 
 import './PsrOne.css';
+import './PsrItem.ts';
+import { PsrItem } from './PsrItem.ts';
 
 function PsrOne() {
     const [releases, setReleases] = useState([]);
@@ -101,8 +103,52 @@ function PsrOne() {
         editElement.classList.add('visible');
     }
 
+    const [psrs, setPsrs] = useState<PsrItem[]>([]);
+
+    async function LoadPsrs() {
+        const response = await fetch('api/PSRItems');
+        const data = await response.json();
+        setPsrs(data);
+    };
+
+    useEffect(() => {
+        LoadPsrs();
+    }, []);
+
+    function GetYN(b) {
+        console.log(b);
+        const v = b ? 'y' : 'n';
+        return v;
+    }
+
+    const psrItems =
+        psrs?.map(item =>
+            <tr key={item.patchset}>
+                <td>{item.gen}</td>
+                <td>{item.release}</td>
+                <td>{item.patchset}</td>
+                <td>{GetYN(item.unixbuild)}</td>
+            </tr>
+        );
+
+    const psrTable =
+        <table className="table table-striped" aria-labelledby="tabelLabel">
+            <thead>
+                <tr>
+                    <th>Generation</th>
+                    <th>Release</th>
+                    <th>Service Pack</th>
+                    <th>Unix build</th>
+                </tr>
+            </thead>
+            <tbody>
+                {psrItems}
+            </tbody>
+        </table>;
+
     const mainPsr = <div id="mainpsr" className="visible">
         <button id="addButton" onClick={newClicked}>New request</button>
+        <ol>{psrTable}</ol>
 
     </div>;
 
