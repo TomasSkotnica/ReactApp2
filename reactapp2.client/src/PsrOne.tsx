@@ -6,12 +6,50 @@ import './PsrItem.ts';
 import { PsrItem } from './PsrItem.ts';
 
 function PsrOne() {
+    const [selectedTab, setSelectedTab] = useState("PsrMain");
+
+    function saveClicked() {
+        // save record, then switch to main subpage
+        const toSaveItem = { gen: selGen, release: selRel, patchset: selPs, unixbuild: false };
+
+        fetch('api/PSRItems/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(toSaveItem),
+        })
+            .then((response) => {
+                if (!response.ok) { throw new Error(`HTTP error: ${response.status}`); }
+                return response.json();
+            })
+            .then((result) => {
+                console.log(result);
+                setReleases(result);
+            })
+            .catch((error) => {
+                //document.querySelector("pre").textContent = `Could not fetch verse: ${error}`;
+                console.log(error);
+            });
+
+        setSelectedTab("MainPsr"); 
+    }
+
+    function newClicked() {
+        setSelectedTab("EditForm");
+    }
+
+    const [selGen, setSelGen] = useState();
+    const [selRel, setSelRel] = useState();
+    const [selPs, setSelPs] = useState();
+
     const [releases, setReleases] = useState([]);
     const [spacks, setSPacks] = useState([]);
     async function handG(event) {
         setSPacks([]);
         const data = event.target.value;
-        console.log("passed value is " + data);
+        setSelGen(data);
+        console.log("selected gen is " + data);
         fetch('api/PSRItems/releases/' + data, {
             method: 'GET',
             headers: {
@@ -35,7 +73,8 @@ function PsrOne() {
 
     async function handR(event) {
         const data = event.target.value;
-        console.log("passed value is " + data);
+        setSelRel(data);
+        console.log("selected release is " + data);
         fetch('/api/PSRItems/spacks/' + data, {
             method: 'GET',
             headers: {
@@ -55,19 +94,24 @@ function PsrOne() {
             });
     };
 
+    async function handP(event) {
+        const data = event.target.value;
+        setSelPs(data);
+        console.log("selected PS is " + data);
+    };
 
     const relItems =
         releases.map((item) => <option key={item} value={item}>{item}</option>);
     const spackItems =
         spacks.map((item) => <option key={item} value={item}>{item}</option>);
 
-    const editForm = <div id="editform" className="hidden">
+    const editForm = <div id="editform">
         <div>
             <pre></pre>
             <label>select generation:</label>
             <select id="gen" name="gen" onChange={handG}>
-                <option value="1">Forms</option>
-                <option value="3">Desktop</option>
+                <option value="Forms">Forms</option>
+                <option value="Desktop">Desktop</option>
             </select>
         </div>
         <div>
@@ -78,30 +122,12 @@ function PsrOne() {
         </div>
         <div>
             <label>select SP:</label>
-            <select id="spack" name="spack">
+            <select id="spack" name="spack" onChange={handP}>
                 {spackItems}
             </select>
         </div>
         <button id="saveButton" onClick={saveClicked}>Save request</button>
     </div>;
-
-    function saveClicked() {
-        var editElement = document.getElementById('editform');
-        var mainElement = document.getElementById('mainpsr');
-        mainElement.classList.remove('hidden');
-        mainElement.classList.add('visible');
-        editElement.classList.remove('visible');
-        editElement.classList.add('hidden');
-    }
-
-    function newClicked() {
-        var mainElement = document.getElementById('mainpsr');
-        var editElement = document.getElementById('editform');
-        mainElement.classList.remove('visible');
-        mainElement.classList.add('hidden');
-        editElement.classList.remove('hidden');
-        editElement.classList.add('visible');
-    }
 
     const [psrs, setPsrs] = useState<PsrItem[]>([]);
 
@@ -152,16 +178,24 @@ function PsrOne() {
             </tbody>
         </table>;
 
-    const mainPsr = <div id="mainpsr" className="visible">
+    const mainPsr = <div id="mainpsr">
         <button id="addButton" onClick={newClicked}>New request</button>
         <ol>{psrTable}</ol>
 
     </div>;
 
+    let content;
+    if (selectedTab === "EditForm") {
+        content = editForm;
+    } else if (selectedTab === "PsrMain") {
+        content = mainPsr;
+    } else {
+        content = "PsrOne - no selection of subpage was done to display";
+    }
+
 
   return (<>
-      {editForm}
-      {mainPsr}
+      {content}
   </>);
 }
 

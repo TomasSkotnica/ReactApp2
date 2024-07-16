@@ -80,10 +80,14 @@ namespace ReactApp2.Server.Controllers
             return new string[] { "20.0.1", "20.0.2" };
         }
 
-        // POST api/<PsrrwactionsController>
+        // POST api/PSRItems
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<PsrItem>> Post([FromBody] PsrItem psrItem)
         {
+            _context.PsrItems.Add(psrItem);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Post", new { patchset = psrItem.Patchset }, psrItem);
         }
 
         // PUT api/<PsrrwactionsController>/5
