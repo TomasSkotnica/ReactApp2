@@ -2,6 +2,8 @@ import { useEffect, useState, createContext } from 'react';
 import './App.css';
 import Kontakty from './Kontakty';
 import PsrOne from './PsrOne.tsx';
+import TicTacToe from './TicTacToe/TicTacToe.tsx';
+
 
 function App() {
     const [previousTab, setPreviousTab] = useState("");
@@ -17,11 +19,18 @@ function App() {
         setSelectedTab("Psr");
     }
 
+    function TicTacToeClicked() {
+        setPreviousTab(selectedTab);
+        setSelectedTab("TicTacToe");
+    }
+
     let content;
     if (selectedTab === "Kontakty") {
         content = <Kontakty />;
     } else if (selectedTab === "Psr") {
         content = <PsrOne />;
+    } else if (selectedTab === "TicTacToe") {
+        content = <TicTacToe />;
     } else {
         content = "home page";
     }
@@ -35,6 +44,7 @@ function App() {
                 <a href="./rootKontakty.html">Kontakty page</a>&nbsp;
                 <button onClick={KontaktyClicked}>Kontakty</button>
                 <button onClick={PsrClicked}>SP request</button>
+                <button onClick={TicTacToeClicked}>TicTacToe game</button>
             </div>
             { content}
         </div>

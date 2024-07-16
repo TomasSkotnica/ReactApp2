@@ -121,6 +121,12 @@ function PsrOne() {
         return v;
     }
 
+    //tak by to melo fungovat:
+    //const user = {
+    //    b: true
+    //};
+    //<h1>{user.b ? "y" : "n"}</h1>
+
     const psrItems =
         psrs?.map(item =>
             <tr key={item.patchset}>

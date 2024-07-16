@@ -8,4 +8,7 @@
     <!-- Folder where production build objects will be placed. // MSBuildProjectDirectory	- The absolute path of the directory where the project file is located, for example C:\MyCompany\MyProduct.  Do not include the final backslash on this property.C:\S -->
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\TicTacToe\" />
+  </ItemGroup>
 </Project>
