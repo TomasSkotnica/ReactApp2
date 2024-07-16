@@ -33,20 +33,27 @@ function TicTacToe() {
     }
     
     function handleClick(index) {
-        console.log(`V kole ${nextTah.count} tahne ${nextTah.player} na poli ${index}`);
-        const novepole = Array(9).fill(null);
-        for (let i = 0; i < novepole.length; i++) {
-            novepole[i] = squares[i];
-        }
-        novepole[index] = nextTah.player;
-        setSquares(novepole);
+        if (!nextTah.status.includes("Winner")) {
+            console.log(`V kole ${nextTah.count} tahne ${nextTah.player} na poli ${index}`);
+            const novepole = Array(9).fill(null);
+            for (let i = 0; i < novepole.length; i++) {
+                novepole[i] = squares[i];
+            }
+            novepole[index] = nextTah.player;
+            setSquares(novepole);
 
-        const winner = calculateWinner(novepole);
-        if (winner !== null) {
-            setNexttah(setWinner(winner));
-        } else {
-            setNexttah(setTahProperties(nextTah.count));
+            const winner = calculateWinner(novepole);
+            if (winner !== null) {
+                setNexttah(setWinner(winner));
+            } else {
+                setNexttah(setTahProperties(nextTah.count));
+            }
         }
+    }
+
+    function setNewGame() {
+        setNexttah(setTahProperties(0));
+        setSquares(Array(9).fill(null));
     }
 
     let cont = <div>
@@ -70,7 +77,11 @@ function TicTacToe() {
         
 
     return (
-        <>Piskvorky<br/>{cont}</>
+        <>
+            Piskvorky<br />
+            {cont}
+            <button onClick={setNewGame}>New game</button>
+        </>
     );
 
     function calculateWinner(squares) {
