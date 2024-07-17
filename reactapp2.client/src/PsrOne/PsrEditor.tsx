@@ -1,13 +1,6 @@
-//import React from 'react';
 import { useEffect, useState } from 'react';
 
-import './PsrOne.css';
-import './PsrItem.ts';
-import { PsrItem } from './PsrItem.ts';
-
-function PsrOne() {
-    const [selectedTab, setSelectedTab] = useState("PsrMain");
-
+function PsrEditor({showRequestOfKey}) {
     function saveClicked() {
         // save record, then switch to main subpage
         const toSaveItem = { gen: selGen, release: selRel, patchset: selPs, unixBuild: selUB };
@@ -30,14 +23,12 @@ function PsrOne() {
                 //document.querySelector("pre").textContent = `Could not fetch verse: ${error}`;
                 console.log(error);
             });
-
-        setSelectedTab("MainPsr"); 
     }
 
-    function newClicked() {
-        setSelectedTab("EditForm");
-        // document.getElementById("gen").focus(); // tag must exist to focus it
-    }
+    const [gen, setGen] = useState();
+    const [rel, setRel] = useState();
+    const [ps, setPs] = useState();
+    const [ub, setUb] = useState<boolean>();
 
     const [selGen, setSelGen] = useState();
     const [selRel, setSelRel] = useState();
@@ -70,8 +61,6 @@ function PsrOne() {
             .catch((error) => {
                 document.querySelector("pre").textContent = `Could not fetch verse: ${error}`;
             });
-        //const response = await fetch('api/PSRItems/releases');
-        //const result = await response.json();
     };
 
     async function handR(event) {
@@ -98,7 +87,7 @@ function PsrOne() {
             });
     };
 
-    async function handP(event) {
+async function handP(event) {
         const data = event.target.value;
         setSelPs(data);
         console.log("selected PS is " + data);
@@ -120,7 +109,7 @@ function PsrOne() {
         <div>
             <pre></pre>
             <label>select generation:</label>
-            <select id="gen" name="gen" onChange={handG}>
+            <select id="gen" value={gen} name="gen" onChange={handG}>
                 <option value=""></option>
                 <option value="Forms">Forms</option>
                 <option value="Desktop">Desktop</option>
@@ -128,13 +117,13 @@ function PsrOne() {
         </div>
         <div>
             <label>select release:</label>
-            <select id="release" name="release" onChange={handR}>
+            <select id="release" value={rel} name="release" onChange={handR}>
                 {relItems}
             </select>
         </div>
         <div>
             <label>select SP:</label>
-            <select id="spack" name="spack" onChange={handP}>
+            <select id="spack" value={ps} name="spack" onChange={handP}>
                 {spackItems}
             </select>
         </div>
@@ -148,73 +137,38 @@ function PsrOne() {
         <button id="saveButton" onClick={saveClicked}>Save request</button>
     </div>;
 
-    const [psrs, setPsrs] = useState<PsrItem[]>([]);
-
     async function LoadPsrs() {
-        const response = await fetch('api/PSRItems');
-        const data = await response.json();
-        setPsrs(data);
+        if (showRequestOfKey !== null) {
+            const response = await fetch('api/PSRItems/' + showRequestOfKey);
+            const data = await response.json();
+            //            const toSaveItem = { gen: selGen, release: selRel, patchset: selPs, unixBuild: selUB };
+            setGen(data.gen);
+            setSelGen(data.gen);
+            setRel(data.release);
+            setSelRel(data.release);
+            setPs(data.patchset);
+            setSelPs(data.patchset);
+            if (data.unixBuild) {
+                setUb(true);
+                setSelUB(true);
+            } else {
+                setUb(false);
+                setSelUB(false);
+            }
+        }
     };
 
     useEffect(() => {
         LoadPsrs();
     }, []);
 
-    function GetYN(b) {
-        console.log(b);
-        const v = b ? 'y' : 'n';
-        return v;
-    }
-
-    //tak by to melo fungovat:
-    const unixbuild = {
-        unixbuild: true
-    };
-    //<h1>{user.b ? "y" : "n"}</h1>
-
-    //const psrItems = '';
-
-    const psrTable =
-        <table className="table table-striped" aria-labelledby="tabelLabel">
-            <thead>
-                <tr>
-                    <th>Generation</th>
-                    <th>Release</th>
-                    <th>Service Pack</th>
-                    <th>Unix build</th>
-                </tr>
-            </thead>
-            <tbody>
-                {psrs?.map(item =>
-                    <tr key={item.patchset}>
-                        <td>{item.gen}</td>
-                        <td>{item.release}</td>
-                        <td>{item.patchset}</td>
-                        <td>{GetYN(item.unixBuild)}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
-
-    const mainPsr = <div id="mainpsr">
-        <button id="addButton" onClick={newClicked}>New request</button>
-        <ol>{psrTable}</ol>
-
-    </div>;
-
-    let content;
-    if (selectedTab === "EditForm") {
-        content = editForm;
-    } else if (selectedTab === "PsrMain") {
-        content = mainPsr;
-    } else {
-        content = "PsrOne - no selection of subpage was done to display";
-    }
-
-
-  return (<>
-      {content}
-  </>);
+    return (<>
+        {editForm}
+    </>);
 }
+//"gen": "Forms",
+//    "release": "20.0.5",
+//        "patchset": "20.0.5-0120",
+//            "unixBuild": true
 
-export default PsrOne;
+export default PsrEditor;

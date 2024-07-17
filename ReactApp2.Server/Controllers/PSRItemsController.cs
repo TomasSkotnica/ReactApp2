@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReactApp2.Server.Models;
+using System.Xml.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -68,22 +69,11 @@ namespace ReactApp2.Server.Controllers
                 return new string[] { };
         }
 
-        [HttpGet("filter")]
-        public IEnumerable<string> Get2()
-        {
-            string gen = HttpContext.Request.Query["gen"];
-            if (string.IsNullOrEmpty(gen)) { gen = string.Empty; }
-            return new string[] { "20.0.1", "20.0.2" };
-            // return await _context.PSRitems.Where(t => t.Gen != null && t.Gen.Equals(gen)).ToListAsync();
-        }
-
-        // GET api/<PsrrwactionsController>/5
-        // now used to get releases by given id of generation
+        // GET api/PSRItems/21.0.5-1010
         [HttpGet("{id}")]
-        public IEnumerable<string> Get(int id)
+        public async Task<ActionResult<PsrItem>> Get(string id)
         {
-            _logger.LogInformation($"Get got generation {id}");
-            return new string[] { "20.0.1", "20.0.2" };
+            return await _context.PsrItems.Where(i => i.Patchset == id).FirstAsync();
         }
 
         // POST api/PSRItems
@@ -96,16 +86,26 @@ namespace ReactApp2.Server.Controllers
             return CreatedAtAction("Post", new { patchset = psrItem.Patchset }, psrItem);
         }
 
-        // PUT api/<PsrrwactionsController>/5
+        // PUT api/PSRItems/{id}
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<PsrrwactionsController>/5
+        // DELETE api/PSRItems/{id}
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
+            var item = await _context.PsrItems.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            _context.PsrItems.Remove(item);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

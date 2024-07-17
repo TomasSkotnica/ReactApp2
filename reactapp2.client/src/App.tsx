@@ -1,7 +1,7 @@
 import { useEffect, useState, createContext } from 'react';
 import './App.css';
 import Kontakty from './Kontakty';
-import PsrOne from './PsrOne.tsx';
+import PsrOneMain from './PsrOne/PsrOneMain.tsx';
 import TicTacToe from './TicTacToe/TicTacToe.tsx';
 
 
@@ -28,7 +28,7 @@ function App() {
     if (selectedTab === "Kontakty") {
         content = <Kontakty />;
     } else if (selectedTab === "Psr") {
-        content = <PsrOne />;
+        content = <PsrOneMain />;
     } else if (selectedTab === "TicTacToe") {
         content = <TicTacToe />;
     } else {
@@ -40,13 +40,15 @@ function App() {
     return (
         <div>
             <div className="nav-bar-row">
-                <a href="./rootPSR.html">Patchset request page</a>&nbsp;
+                <a href="./rootPSR.html">SP request page</a>&nbsp;
                 <a href="./rootKontakty.html">Kontakty page</a>&nbsp;
                 <button onClick={KontaktyClicked}>Kontakty</button>
                 <button onClick={PsrClicked}>SP request</button>
                 <button onClick={TicTacToeClicked}>TicTacToe game</button>
             </div>
-            { content}
+            <div>
+                {content}
+            </div>
         </div>
     );
 
