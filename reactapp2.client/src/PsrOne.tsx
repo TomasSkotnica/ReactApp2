@@ -10,7 +10,7 @@ function PsrOne() {
 
     function saveClicked() {
         // save record, then switch to main subpage
-        const toSaveItem = { gen: selGen, release: selRel, patchset: selPs, unixbuild: false };
+        const toSaveItem = { gen: selGen, release: selRel, patchset: selPs, unixBuild: selUB };
 
         fetch('api/PSRItems/', {
             method: 'POST',
@@ -25,7 +25,6 @@ function PsrOne() {
             })
             .then((result) => {
                 console.log(result);
-                setReleases(result);
             })
             .catch((error) => {
                 //document.querySelector("pre").textContent = `Could not fetch verse: ${error}`;
@@ -37,14 +36,17 @@ function PsrOne() {
 
     function newClicked() {
         setSelectedTab("EditForm");
+        // document.getElementById("gen").focus(); // tag must exist to focus it
     }
 
     const [selGen, setSelGen] = useState();
     const [selRel, setSelRel] = useState();
     const [selPs, setSelPs] = useState();
+    const [selUB, setSelUB] = useState(true);
 
     const [releases, setReleases] = useState([]);
     const [spacks, setSPacks] = useState([]);
+
     async function handG(event) {
         setSPacks([]);
         const data = event.target.value;
@@ -62,6 +64,7 @@ function PsrOne() {
             })
             .then((result) => {
                 console.log(result);
+                result.splice(0, 0, "");
                 setReleases(result);
             })
             .catch((error) => {
@@ -87,6 +90,7 @@ function PsrOne() {
             })
             .then((result) => {
                 console.log(result);
+                result.splice(0, 0, "");
                 setSPacks(result);
             })
             .catch((error) => {
@@ -100,6 +104,13 @@ function PsrOne() {
         console.log("selected PS is " + data);
     };
 
+    function handUB(event) {
+        if (event.target.value === 'y')
+            setSelUB(true);
+        else
+            setSelUB(false);
+    }
+
     const relItems =
         releases.map((item) => <option key={item} value={item}>{item}</option>);
     const spackItems =
@@ -110,6 +121,7 @@ function PsrOne() {
             <pre></pre>
             <label>select generation:</label>
             <select id="gen" name="gen" onChange={handG}>
+                <option value=""></option>
                 <option value="Forms">Forms</option>
                 <option value="Desktop">Desktop</option>
             </select>
@@ -125,6 +137,13 @@ function PsrOne() {
             <select id="spack" name="spack" onChange={handP}>
                 {spackItems}
             </select>
+        </div>
+        <div>
+            <label>
+                Unix build
+                <label><input type="radio" value="n" checked={selUB === false} onChange={handUB} />No</label>
+                <label><input type="radio" value="y" checked={selUB === true} onChange={handUB} />Yes</label>
+            </label>
         </div>
         <button id="saveButton" onClick={saveClicked}>Save request</button>
     </div>;
@@ -148,20 +167,12 @@ function PsrOne() {
     }
 
     //tak by to melo fungovat:
-    //const user = {
-    //    b: true
-    //};
+    const unixbuild = {
+        unixbuild: true
+    };
     //<h1>{user.b ? "y" : "n"}</h1>
 
-    const psrItems =
-        psrs?.map(item =>
-            <tr key={item.patchset}>
-                <td>{item.gen}</td>
-                <td>{item.release}</td>
-                <td>{item.patchset}</td>
-                <td>{GetYN(item.unixbuild)}</td>
-            </tr>
-        );
+    //const psrItems = '';
 
     const psrTable =
         <table className="table table-striped" aria-labelledby="tabelLabel">
@@ -174,7 +185,14 @@ function PsrOne() {
                 </tr>
             </thead>
             <tbody>
-                {psrItems}
+                {psrs?.map(item =>
+                    <tr key={item.patchset}>
+                        <td>{item.gen}</td>
+                        <td>{item.release}</td>
+                        <td>{item.patchset}</td>
+                        <td>{GetYN(item.unixBuild)}</td>
+                    </tr>
+                )}
             </tbody>
         </table>;
 

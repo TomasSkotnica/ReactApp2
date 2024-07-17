@@ -20,7 +20,7 @@ namespace ReactApp2.Server.Controllers
             _logger = logger;
             _logger.LogInformation(1234, $"Tomas message to Debug console: PSRsimplesController constructor is starting ...");
             _context = context;
-            HardCodeInit();
+            // HardCodeInit();
         }
 
         private async void HardCodeInit() 
@@ -45,10 +45,12 @@ namespace ReactApp2.Server.Controllers
         [HttpGet("releases/{gen}")]
         public async Task<ActionResult<IEnumerable<string>>> GetReleases(string gen)
         {
-            if (gen == "1")
+            if (gen == "Forms")
                 return new string[] { "21.0.5", "20.0.5" };
-            else
+            else if (gen == "Desktop")
                 return new string[] { "21.0.1", "20.0.2" };
+            else 
+                return new string[] { };
         }
 
         [HttpGet("spacks/{rel}")]
@@ -56,8 +58,12 @@ namespace ReactApp2.Server.Controllers
         {
             if (rel == "20.0.5")
                 return new string[] { "20.0.5-0100", "20.0.5-0120" };
+            else if (rel == "21.0.5")
+                return new string[] { "21.0.5-1010", "21.0.5-1020" };
             else if (rel == "20.0.2")
                 return new string[] { "20.0.2-0010", "20.0.2-0020" };
+            else if (rel == "21.0.1")
+                return new string[] { "21.0.1-0030", "21.0.1-0040" };
             else
                 return new string[] { };
         }
