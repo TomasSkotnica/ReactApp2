@@ -38,9 +38,8 @@ function PsrEditor({showRequestOfKey}) {
     const [releases, setReleases] = useState([]);
     const [spacks, setSPacks] = useState([]);
 
-    async function handG(event) {
+    async function handG(data) {
         setSPacks([]);
-        const data = event.target.value;
         setSelGen(data);
         console.log("selected gen is " + data);
         fetch('api/PSRItems/releases/' + data, {
@@ -63,8 +62,7 @@ function PsrEditor({showRequestOfKey}) {
             });
     };
 
-    async function handR(event) {
-        const data = event.target.value;
+    async function handR(data) {
         setSelRel(data);
         console.log("selected release is " + data);
         fetch('/api/PSRItems/spacks/' + data, {
@@ -109,7 +107,7 @@ async function handP(event) {
         <div>
             <pre></pre>
             <label>select generation:</label>
-            <select id="gen" value={gen} name="gen" onChange={handG}>
+            <select id="gen" value={gen} name="gen" onChange={e => handG(e.target.value)}>
                 <option value=""></option>
                 <option value="Forms">Forms</option>
                 <option value="Desktop">Desktop</option>
@@ -117,7 +115,7 @@ async function handP(event) {
         </div>
         <div>
             <label>select release:</label>
-            <select id="release" value={rel} name="release" onChange={handR}>
+            <select id="release" value={rel} name="release" onChange={e => handR(e.target.value)}>
                 {relItems}
             </select>
         </div>
@@ -142,8 +140,10 @@ async function handP(event) {
             const response = await fetch('api/PSRItems/' + showRequestOfKey);
             const data = await response.json();
             //            const toSaveItem = { gen: selGen, release: selRel, patchset: selPs, unixBuild: selUB };
+            handG(data.gen);
             setGen(data.gen);
             setSelGen(data.gen);
+            handR(data.release);
             setRel(data.release);
             setSelRel(data.release);
             setPs(data.patchset);
