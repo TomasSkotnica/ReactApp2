@@ -82,14 +82,39 @@ namespace ReactApp2.Server.Controllers
         {
             _context.PsrItems.Add(psrItem);
             await _context.SaveChangesAsync();
+            // ControllerBase.CreatedAtAction vraci CreatedAtActionResult coz je 201
+            // (action name, route values, value)
+            // nebo se muze vracet (z GET) OkObjectResult volanim Ok(Object); 
+            // Inheritance: Object-ActionResult-ObjectResult-OkObjectResult coz je 200
 
+            // v tomto pripade vracim presne to co jsem dostal
+            // jinak muzu prijmout data z formulare v jedne tride (DTO, contract, ktery muze byt poskytovany nugetem)
+            // a vratit jinou tridu (response), ktera obsahuje navic id, LastModifiedDate ...
+            // pro ulozeni do db muzeme mit zase modelovou tridu, kterou naplnime ze vstupniho objektu a k ni pridame id, last modified date ...
+
+            // ukladat se da do Dictionary<klic, objekt> pro vyvojove ucely
+            // kdyz se nepouziva EF, tak se dela adresar Services a v nem se implementuje servisni trida pro danou tabulku (repositar)
+            // service muze byt jako implemetace interface, lze ji pak nahradit skutecnou implementaci
+            // builder.Services.AddSingleton<Iservice, service>();
+            // AddScoped - pro vyrizeni jednoho requestu se pouzije jedna instance servicy
+            // transient, pokazde, kdyz potrebujes service, udelej novy objekt
+            // Buber udelal dictionary jako static a service jako scoped
             return CreatedAtAction("Post", new { patchset = psrItem.Patchset }, psrItem);
         }
 
         // PUT api/PSRItems/{id}
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(string id, [FromBody] PsrItem item)
         {
+            if (id != item.Patchset)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(item).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // DELETE api/PSRItems/{id}

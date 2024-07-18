@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 
-function PsrEditor({showRequestOfKey}) {
+function PsrEditor({showRequestOfKey, backToListCallback}) {
     function saveClicked() {
         // save record, then switch to main subpage
         const toSaveItem = { gen: selGen, release: selRel, patchset: selPs, unixBuild: selUB };
 
+        const method = showRequestOfKey === null ? "POST" : "PUT";
+
         fetch('api/PSRItems/', {
-            method: 'POST',
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -20,15 +22,24 @@ function PsrEditor({showRequestOfKey}) {
                 console.log(result);
             })
             .catch((error) => {
-                //document.querySelector("pre").textContent = `Could not fetch verse: ${error}`;
+                const ef = document.getElementById("error-message");
+                const messageItem = document.createElement('div');
+                messageItem.textContent = error;
+                ef.appendChild(messageItem);
                 console.log(error);
             });
+
+        if (showRequestOfKey !== null) {
+            // this request was edited, switch back to list
+            // if request is new, user can stay in editor and save another new request
+            backToListCallback();
+        }
     }
 
     const [gen, setGen] = useState();
     const [rel, setRel] = useState();
     const [ps, setPs] = useState();
-    const [ub, setUb] = useState<boolean>();
+    const [_, setUb] = useState<boolean>();
 
     const [selGen, setSelGen] = useState();
     const [selRel, setSelRel] = useState();
@@ -40,6 +51,8 @@ function PsrEditor({showRequestOfKey}) {
 
     async function handG(data) {
         setSPacks([]);
+        setSelPs(undefined);
+        setSelRel(undefined);
         setSelGen(data);
         console.log("selected gen is " + data);
         fetch('api/PSRItems/releases/' + data, {
@@ -58,11 +71,12 @@ function PsrEditor({showRequestOfKey}) {
                 setReleases(result);
             })
             .catch((error) => {
-                document.querySelector("pre").textContent = `Could not fetch verse: ${error}`;
+                document.getElementById("error-message").textContent = `${error}`;
             });
     };
 
     async function handR(data) {
+        setSelPs(undefined);
         setSelRel(data);
         console.log("selected release is " + data);
         fetch('/api/PSRItems/spacks/' + data, {
@@ -81,7 +95,7 @@ function PsrEditor({showRequestOfKey}) {
                 setSPacks(result);
             })
             .catch((error) => {
-                document.querySelector("pre").textContent = `Could not fetch verse: ${error}`;
+                document.getElementById("error-message").textContent = `${error}`;
             });
     };
 
@@ -132,14 +146,18 @@ async function handP(event) {
                 <label><input type="radio" value="y" checked={selUB === true} onChange={handUB} />Yes</label>
             </label>
         </div>
+        <br></br>
+        <div id="error-message"></div>
         <button id="saveButton" onClick={saveClicked}>Save request</button>
+        <br></br>
+        When user enters new requests, view will stay on editor after save.<br></br>
+        Otherwise editor is "redirected" back to list view.
     </div>;
 
     async function LoadPsrs() {
         if (showRequestOfKey !== null) {
             const response = await fetch('api/PSRItems/' + showRequestOfKey);
             const data = await response.json();
-            //            const toSaveItem = { gen: selGen, release: selRel, patchset: selPs, unixBuild: selUB };
             handG(data.gen);
             setGen(data.gen);
             setSelGen(data.gen);
@@ -156,7 +174,7 @@ async function handP(event) {
                 setSelUB(false);
             }
         }
-    };
+    }
 
     useEffect(() => {
         LoadPsrs();

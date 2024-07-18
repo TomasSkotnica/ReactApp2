@@ -1,34 +1,23 @@
-import { useEffect, useState, createContext } from 'react';
+import { useState } from 'react';
 import './App.css';
 import Kontakty from './Kontakty';
-import PsrOneMain from './PsrOne/PsrOneMain.tsx';
 import TicTacToe from './TicTacToe/TicTacToe.tsx';
 
 
 function App() {
-    const [previousTab, setPreviousTab] = useState("");
     const [selectedTab, setSelectedTab] = useState("");
 
     function KontaktyClicked() {
-        setPreviousTab(selectedTab);
         setSelectedTab("Kontakty");
     }
 
-    function PsrClicked() {
-        setPreviousTab(selectedTab);
-        setSelectedTab("Psr");
-    }
-
     function TicTacToeClicked() {
-        setPreviousTab(selectedTab);
         setSelectedTab("TicTacToe");
     }
 
     let content;
     if (selectedTab === "Kontakty") {
         content = <Kontakty />;
-    } else if (selectedTab === "Psr") {
-        content = <PsrOneMain />;
     } else if (selectedTab === "TicTacToe") {
         content = <TicTacToe />;
     } else {
@@ -43,7 +32,6 @@ function App() {
                 <a href="./rootPSR.html">SP request page</a>&nbsp;
                 <a href="./rootKontakty.html">Kontakty page</a>&nbsp;
                 <button onClick={KontaktyClicked}>Kontakty</button>
-                <button onClick={PsrClicked}>SP request</button>
                 <button onClick={TicTacToeClicked}>TicTacToe game</button>
             </div>
             <div>

@@ -22,9 +22,9 @@ function PsrOneMain() {
     if (clickedButton === "List") {
         content = <PsrList />;
     } else if (clickedButton === "New") {
-        content = <PsrEditor showRequestOfKey={null} />;
+        content = <PsrEditor showRequestOfKey={null} backToListCallback={null} />;
     } else if (clickedButton === "Edit") {
-        content = <PsrEditor showRequestOfKey={"20.0.5-0120"} />;
+        content = <PsrEditor showRequestOfKey={"20.0.5-0120"} backToListCallback={ListClicked} />;
     } else {
         content = "psr page";
     }
