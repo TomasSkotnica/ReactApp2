@@ -5,29 +5,54 @@ function PsrEditor({showRequestOfKey, backToListCallback}) {
         // save record, then switch to main subpage
         const toSaveItem = { gen: selGen, release: selRel, patchset: selPs, unixBuild: selUB };
 
-        const method = showRequestOfKey === null ? "POST" : "PUT";
+        const methoda = showRequestOfKey === null ? "POST" : "PUT";
 
-        fetch('api/PSRItems/', {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(toSaveItem),
-        })
-            .then((response) => {
-                if (!response.ok) { throw new Error(`HTTP error: ${response.status}`); }
-                return response.json();
+        if (showRequestOfKey === null) {
+            fetch('api/PSRItems/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(toSaveItem),
             })
-            .then((result) => {
-                console.log(result);
+                .then((response) => {
+                    if (!response.ok) { throw new Error(`HTTP error: ${response.status}`); }
+                    return response.json();
+                })
+                .then((result) => {
+                    console.log(result);
+                })
+                .catch((error) => {
+                    const ef = document.getElementById("error-message");
+                    const messageItem = document.createElement('div');
+                    messageItem.textContent = error;
+                    ef.appendChild(messageItem);
+                    console.log(error);
+                });
+        } else {
+            fetch('api/PSRItems/' + showRequestOfKey, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(toSaveItem),
             })
-            .catch((error) => {
-                const ef = document.getElementById("error-message");
-                const messageItem = document.createElement('div');
-                messageItem.textContent = error;
-                ef.appendChild(messageItem);
-                console.log(error);
-            });
+                .then((response) => {
+                    if (!response.ok) { throw new Error(`HTTP error: ${response.status}`); }
+                    return response.json();
+                })
+                .then((result) => {
+                    console.log(result);
+                })
+                .catch((error) => {
+                    const ef = document.getElementById("error-message");
+                    const messageItem = document.createElement('div');
+                    messageItem.textContent = error;
+                    ef.appendChild(messageItem);
+                    console.log(error);
+                });
+        }
 
         if (showRequestOfKey !== null) {
             // this request was edited, switch back to list

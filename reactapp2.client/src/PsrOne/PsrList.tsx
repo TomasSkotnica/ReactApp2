@@ -9,11 +9,18 @@ function PsrList() {
         const response = await fetch('api/PSRItems');
         const data = await response.json();
         setPsrItems(data);
+        console.log(data);
     };
 
     useEffect(() => {
         LoadPsrItems();
     }, []);
+
+    function rowClicked(event) {
+        alert(event.target.key);
+        const kam = document.getElementById("selectedRow");
+        kam.innerText = event.target.value;
+    }
 
     const psrTable =
         <table className="table table-striped" aria-labelledby="tabelLabel">
@@ -27,7 +34,7 @@ function PsrList() {
             </thead>
             <tbody>
                 {psrItems?.map(item =>
-                    <tr key={item.patchset}>
+                    <tr key={item.patchset} onClick={rowClicked}>
                         <td>{item.gen}</td>
                         <td>{item.release}</td>
                         <td>{item.patchset}</td>
@@ -38,6 +45,7 @@ function PsrList() {
         </table>;
 
     return (<>
+        <label id="selectedRow"></label>
         {psrTable}
     </>
     );
