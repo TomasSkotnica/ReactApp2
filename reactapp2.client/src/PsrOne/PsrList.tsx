@@ -17,7 +17,7 @@ function PsrList() {
     }, []);
 
     function rowClicked(event) {
-        alert(event.target.key);
+        alert(event.target);
         const kam = document.getElementById("selectedRow");
         kam.innerText = event.target.value;
     }
