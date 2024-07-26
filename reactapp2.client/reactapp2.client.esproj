@@ -9,8 +9,6 @@
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\PulpTickets\Hotfix\" />
-    <Folder Include="src\PulpTickets\ServicePack\" />
     <Folder Include="src\TicTacToe\" />
   </ItemGroup>
 </Project>

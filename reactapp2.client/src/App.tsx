@@ -29,7 +29,7 @@ function App() {
     return (
         <div>
             <div className="nav-bar-row">
-                <a href="./src/PulpTickets/PulpTicketSystem.html">Pulp page</a>&nbsp;
+                <a href="./rootPulpTicketSystem.html">Pulp page</a>&nbsp;
                 <a href="./rootPSR.html">SP request page</a>&nbsp;
                 <a href="./rootKontakty.html">Kontakty page</a>&nbsp;
                 <button onClick={KontaktyClicked}>Kontakty</button>

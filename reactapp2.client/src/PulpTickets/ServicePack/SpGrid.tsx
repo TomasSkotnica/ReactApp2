@@ -1,10 +1,9 @@
 
-import { PsrItem } from './PsrItem.ts';
+import PsrItem from './PsrItem.ts';
 import SpGridRow from './SpGridRow.tsx';
 
 interface SpGridProps {
     rows: Array<PsrItem>
-    fltGeneration:string,
 }
 
 function SpGrid(props: SpGridProps) {
@@ -12,6 +11,8 @@ function SpGrid(props: SpGridProps) {
     props.rows.forEach((item) => {
         rowsToDisplay.push(<SpGridRow item={item} key={item.patchset}></SpGridRow>);
     });
+
+    console.log("SpGrid is rendered .........................");
 
   return (
       <table>

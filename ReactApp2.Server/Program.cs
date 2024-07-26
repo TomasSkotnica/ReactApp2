@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ContactContext>(opt =>
 builder.Services.AddDbContext<PSRContext>(opt =>
     opt.UseInMemoryDatabase("PSRList"));
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<CsvSerializer>();
 
 var app = builder.Build();
@@ -25,8 +25,8 @@ app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

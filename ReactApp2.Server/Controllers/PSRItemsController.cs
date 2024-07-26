@@ -40,7 +40,19 @@ namespace ReactApp2.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PsrItem>>> Get()
         {
+            // to filter, call 'api/PsrItems?gen=Forms'
+            string gen = HttpContext.Request.Query["gen"];
+            if (!string.IsNullOrEmpty(gen))
+            {
+                return await _context.PsrItems.Where(t => t.Gen.Equals(gen)).ToListAsync();
+            }
             return await _context.PsrItems.ToListAsync();
+        }
+
+        [HttpGet("releases")]
+        public async Task<ActionResult<IEnumerable<string>>> GetReleases()
+        {
+            return new string[] { "21.0.5", "20.0.5", "21.0.1", "20.0.2" };
         }
 
         [HttpGet("releases/{gen}")]

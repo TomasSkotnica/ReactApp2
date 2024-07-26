@@ -1,10 +1,10 @@
-import React, { StrictMode, useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client'
 
-import PulpTicketApp from './PulpTicketApp';
+import ServicePack from './ServicePack';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <PulpTicketApp />
+        <ServicePack />
     </React.StrictMode>,
 )
