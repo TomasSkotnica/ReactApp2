@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ReactApp2.Server.Models;
 using System.Xml.Linq;
+using LinqKit;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,12 +41,24 @@ namespace ReactApp2.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PsrItem>>> Get()
         {
+            var predicate = PredicateBuilder.New<PsrItem>(true);
+
             // to filter, call 'api/PsrItems?gen=Forms'
             string gen = HttpContext.Request.Query["gen"];
             if (!string.IsNullOrEmpty(gen))
             {
+                //predicate = predicate.And(x => x.Gen == gen);
                 return await _context.PsrItems.Where(t => t.Gen.Equals(gen)).ToListAsync();
             }
+
+            // System.InvalidOperationException: The source 'IQueryable' doesn't implement 'IAsyncEnumerable<ReactApp2.Server.Models.PsrItem>'.
+            // Only sources that implement 'IAsyncEnumerable' can be used for Entity Framework asynchronous operations.
+            //var requestList =
+            //    _context.PsrItems.AsExpandable()
+            //    .Where(predicate)
+            //    .OrderBy(x => x.Patchset)
+            //    .ToListAsync();
+            //return await requestList;
             return await _context.PsrItems.ToListAsync();
         }
 

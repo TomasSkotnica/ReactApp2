@@ -99,10 +99,17 @@ function ServicePack() {
     async function searchClicked(criteria: SpSearchCriteria) {
         console.log("Search clicked: gen=" + criteria.fltGeneration);
         set_crt(criteria);
-        const response = await fetch('api/PSRItems?gen=' + criteria.fltGeneration);
+        let uri = 'api/PSRItems';
+        // maybe if is not needed
+        //https://localhost:7208/api/PSRItems?gen= 
+        // works too
+        if (criteria.fltGeneration !== "") {
+            uri += '?gen=' + criteria.fltGeneration;
+        }
+            
+        const response = await fetch(uri);
         const data = await response.json();
         setPsrItems(data);
-        console.log("Search clicked got data: " + data);
     }
 
     return (
@@ -110,7 +117,7 @@ function ServicePack() {
             <SpSearchPanel
                 searchClicked={searchClicked}
             />
-            <p>Search for {crt.fltGeneration}</p>
+            <p>Search for crt.fltGeneration</p>
             <SpGrid
                 rows={psrItems}
             />
