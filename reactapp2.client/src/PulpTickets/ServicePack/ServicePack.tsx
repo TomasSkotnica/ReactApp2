@@ -36,6 +36,7 @@ function SpSearchPanel(props: SpSearchPanelProps) {
     const [errorPanel, setErrorPanel] = useState("");
 
     async function loadReleases(data) {
+        console.log("-------- loadReleases");
         fetch('api/PSRItems/releases/' + data, {
             method: 'GET',
             headers: {
@@ -87,6 +88,7 @@ function ServicePack() {
     const [crt, set_crt] = useState<SpSearchCriteria>();
 
     async function LoadPsrItems() {
+        console.log("----------- LoadPsrItems");
         const response = await fetch('api/PSRItems');
         const data = await response.json();
         setPsrItems(data);
@@ -97,7 +99,7 @@ function ServicePack() {
         LoadPsrItems();
     }, []);
     async function searchClicked(criteria: SpSearchCriteria) {
-        console.log("Search clicked: gen=" + criteria.fltGeneration);
+        console.log("----------- Search clicked: gen=" + criteria.fltGeneration);
         set_crt(criteria);
         let uri = 'api/PSRItems';
         // maybe if is not needed

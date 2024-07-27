@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReactApp2.Server.Models;
-using System.Xml.Linq;
 using LinqKit;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,15 +26,15 @@ namespace ReactApp2.Server.Controllers
 
         private async void HardCodeInit() 
         {
-            _context.PsrItems.Add(new PsrItem { Gen = "Forms", Release = "15.0.5", Patchset = "15.0.5-0100", UnixBuild = false });
-            _context.PsrItems.Add(new PsrItem { Gen = "Forms", Release = "15.0.5", Patchset = "15.0.5-0120", UnixBuild = false });
-            _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "20.0.0", Patchset = "20.0.0-0010", UnixBuild = false });
-            _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "20.0.0", Patchset = "20.0.0-0020", UnixBuild = false });
-            _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "20.0.0", Patchset = "20.0.0-0030", UnixBuild = false });
-            _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "21.0.0", Patchset = "21.0.0-0010", UnixBuild = true });
-            if (_context.PsrItems.FirstOrDefault() == null)
+            if (_context.PsrItems.FirstOrDefault() == null) { 
+                _context.PsrItems.Add(new PsrItem { Gen = "Forms", Release = "15.0.5", Patchset = "15.0.5-0100", UnixBuild = false });
+                _context.PsrItems.Add(new PsrItem { Gen = "Forms", Release = "15.0.5", Patchset = "15.0.5-0120", UnixBuild = false });
+                _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "20.0.0", Patchset = "20.0.0-0010", UnixBuild = false });
+                _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "20.0.0", Patchset = "20.0.0-0020", UnixBuild = false });
+                _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "20.0.0", Patchset = "20.0.0-0030", UnixBuild = false });
+                _context.PsrItems.Add(new PsrItem { Gen = "Desktop", Release = "21.0.0", Patchset = "21.0.0-0010", UnixBuild = true });
                 await _context.SaveChangesAsync();
-
+            }
         }
 
         [HttpGet]
@@ -47,19 +46,9 @@ namespace ReactApp2.Server.Controllers
             string gen = HttpContext.Request.Query["gen"];
             if (!string.IsNullOrEmpty(gen))
             {
-                //predicate = predicate.And(x => x.Gen == gen);
-                return await _context.PsrItems.Where(t => t.Gen.Equals(gen)).ToListAsync();
+                predicate = predicate.And(x => x.Gen == gen);
             }
-
-            // System.InvalidOperationException: The source 'IQueryable' doesn't implement 'IAsyncEnumerable<ReactApp2.Server.Models.PsrItem>'.
-            // Only sources that implement 'IAsyncEnumerable' can be used for Entity Framework asynchronous operations.
-            //var requestList =
-            //    _context.PsrItems.AsExpandable()
-            //    .Where(predicate)
-            //    .OrderBy(x => x.Patchset)
-            //    .ToListAsync();
-            //return await requestList;
-            return await _context.PsrItems.ToListAsync();
+            return await _context.PsrItems.Where(predicate).ToListAsync();
         }
 
         [HttpGet("releases")]
