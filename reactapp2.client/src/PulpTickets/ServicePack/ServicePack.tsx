@@ -1,19 +1,9 @@
-import ReactDOM from 'react-dom/client'
 import { useState, useEffect } from 'react';
 
 //import SpSearchPanel from './SpSearchPanel.tsx';
 //import SpSearchCriteria from './SpSearchPanel.tsx';
-import { PsrItem } from './PsrItem.ts';
+import PsrItem from './PsrItem.ts';
 import SpGrid from './SpGrid.tsx';
-
-const fakerows = [
-    { gen: "Forms", release: "19.0.0", unixbuild: true, patchset: "19.0.0-0200" },
-    { gen: "Forms", release: "19.0.5", unixbuild: true, patchset: "19.0.5-0050" },
-    { gen: "Forms", release: "18.0.0", unixbuild: false, patchset: "18.0.0-0100" },
-    { gen: "Desktop", release: "20.0.0", unixbuild: true, patchset: "20.0.0-0010" },
-    { gen: "Desktop", release: "20.0.1", unixbuild: false, patchset: "20.0.1-0020" },
-    { gen: "Desktop", release: "20.0.1", unixbuild: true, patchset: "20.0.1-0010" }
-];
 
 export interface SpSearchCriteria {
     fltGeneration: string,
@@ -85,33 +75,54 @@ function SpSearchPanel(props: SpSearchPanelProps) {
 
 function ServicePack() {
     const [psrItems, setPsrItems] = useState<PsrItem[]>([]);
-    const [crt, set_crt] = useState<SpSearchCriteria>();
 
-    async function LoadPsrItems() {
+    async function LoadPsrItems(criteria: SpSearchCriteria | undefined) {
         console.log("----------- LoadPsrItems");
-        const response = await fetch('api/PSRItems');
+        let uri = 'api/PSRItems';
+        if (criteria != undefined) {
+            uri += '?gen=' + criteria.fltGeneration;
+        }
+        const response = await fetch(uri);
         const data = await response.json();
         setPsrItems(data);
         console.log(data);
     };
 
     useEffect(() => {
-        LoadPsrItems();
+        LoadPsrItems(undefined);
     }, []);
     async function searchClicked(criteria: SpSearchCriteria) {
         console.log("----------- Search clicked: gen=" + criteria.fltGeneration);
-        set_crt(criteria);
-        let uri = 'api/PSRItems';
-        // maybe if is not needed
-        //https://localhost:7208/api/PSRItems?gen= 
-        // works too
-        if (criteria.fltGeneration !== "") {
-            uri += '?gen=' + criteria.fltGeneration;
-        }
-            
-        const response = await fetch(uri);
-        const data = await response.json();
-        setPsrItems(data);
+        LoadPsrItems(criteria);
+    //    let uri = 'api/PSRItems';
+    //    //https://localhost:7208/api/PSRItems?gen= //    // works too
+    //    if (criteria.fltGeneration !== "") {uri += '?gen=' + criteria.fltGeneration; }
+    //    const response = await fetch(uri);
+    //    const data = await response.json();
+    //    setPsrItems(data);
+    }
+
+    async function addForms() {
+        const toSaveItem = {gen: "Forms", release: "20.0.5", patchset: "20.0.5-0010", unixBuild: true };
+        fetch('api/PSRItems/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(toSaveItem),
+        })
+        .then((response) => {
+            if (!response.ok) { throw new Error(`HTTP error: ${response.status}`); }
+            return response.json();
+        })
+        .then((result) => {
+            console.log(result);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+        LoadPsrItems(undefined);
     }
 
     return (
@@ -119,10 +130,10 @@ function ServicePack() {
             <SpSearchPanel
                 searchClicked={searchClicked}
             />
-            <p>Search for crt.fltGeneration</p>
             <SpGrid
                 rows={psrItems}
             />
+            <button onClick={addForms}>Add Forms SP</button>
         </div>
     );
 }
