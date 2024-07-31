@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import Kontakty from './Kontakty';
 import TicTacToe from './TicTacToe/TicTacToe.tsx';
+import TTT from './TicTacToe/TTT_vzor1.tsx';
 
 
 function App() {
@@ -14,12 +15,17 @@ function App() {
     function TicTacToeClicked() {
         setSelectedTab("TicTacToe");
     }
+    function TTTClicked() {
+        setSelectedTab("TTT");
+    }
 
     let content;
     if (selectedTab === "Kontakty") {
         content = <Kontakty />;
     } else if (selectedTab === "TicTacToe") {
         content = <TicTacToe />;
+    } else if (selectedTab === "TTT") {
+        content = <TTT />;
     } else {
         content = "home page";
     }
@@ -34,6 +40,7 @@ function App() {
                 <a href="./rootKontakty.html">Kontakty page</a>&nbsp;
                 <button onClick={KontaktyClicked}>Kontakty</button>
                 <button onClick={TicTacToeClicked}>TicTacToe game</button>
+                <button onClick={TTTClicked}>TicTacToe vzor</button>
             </div>
             <div>
                 {content}

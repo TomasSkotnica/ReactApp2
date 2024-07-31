@@ -13,10 +13,10 @@ class Tah {
 }
 
 function TicTacToe() {
-    const [nextTah, setNexttah] = useState(setTahProperties(0));
+    const [nextTah, setNexttah] = useState(setTahProperties(0)); //setTahProperties(0)
     const [squares, setSquares] = useState(Array(9).fill(null));
 
-    function setTahProperties(currentStep) {
+    function setTahProperties(currentStep: number) {
         const count = currentStep + 1;
         const player = (count % 2) === 0 ? "X" : "O";
         const status = `Step number ${count} will play ${player}`;
@@ -25,14 +25,14 @@ function TicTacToe() {
         return t;
     }
 
-    function setWinner(player) {
+    function setWinner(player: string) {
         const status = `Winner is ${player}`;
         const t = new Tah(0, "", status);
         console.log(t.status);
         return t;
     }
     
-    function handleClick(index) {
+    function handleClick(index: number) {
         if (!nextTah.status.includes("Winner")) {
             console.log(`V kole ${nextTah.count} tahne ${nextTah.player} na poli ${index}`);
             const novepole = Array(9).fill(null);
@@ -84,7 +84,7 @@ function TicTacToe() {
         </>
     );
 
-    function calculateWinner(squares) {
+    function calculateWinner(squares: string[]) {
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
