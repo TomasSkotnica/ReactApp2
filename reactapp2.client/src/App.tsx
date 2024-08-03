@@ -38,6 +38,7 @@ function App() {
                 <a href="./rootPulpTicketSystem.html">Pulp page</a>&nbsp;
                 <a href="./rootPSR.html">SP request page</a>&nbsp;
                 <a href="./rootKontakty.html">Kontakty page</a>&nbsp;
+                <a href="./rootGeneric.html">Generic</a>&nbsp;
                 <button onClick={KontaktyClicked}>Kontakty</button>
                 <button onClick={TicTacToeClicked}>TicTacToe game</button>
                 <button onClick={TTTClicked}>TicTacToe vzor</button>
