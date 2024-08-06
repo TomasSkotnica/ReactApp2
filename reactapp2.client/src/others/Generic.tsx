@@ -1,15 +1,13 @@
 import React from 'react';
-
 import { useState } from 'react';
 
-type IdNameItem = {
-    id: number;
-    name: string;
-    desc: string;
-}
+import { IdNameItem, ComboBoxIdNameProps } from "./../../lib/Types.ts";
 
 type GenericProps<T> = { options: T[], selectedO: T, onOptionClick: (theme: T) => void };
 
+// options - array of {id, name} - to fill in html tag - name is displayed, id is for setter of selected option
+// selectedO - one record of {id, name} - to highlight selection in html tag
+// onOptionClick - setter of selected option
 function GenericIdName<IdNameItem>({ options, selectedO, onOptionClick }: GenericProps<IdNameItem>) {
     console.log("GenericIdName returns ...");
     return (
@@ -28,6 +26,19 @@ function GenericIdName<IdNameItem>({ options, selectedO, onOptionClick }: Generi
     );
 }
 
+function ComboBoxIdName<IdNameItem>({ options, onOptionSelection }: ComboBoxIdNameProps<IdNameItem>) {
+    function SendSelectedOption(value: string) {
+        onOptionSelection(options.filter(o => o.name === value)[0]);
+    }
+    return (
+        <div>
+            <label>select from items:</label>
+            <select onChange={e => SendSelectedOption(e.target.value)}>
+                {options.map((item) => <option key={item.id} value={item.name}>{item.name}</option>)}
+            </select>
+        </div>
+    );
+}
 
 type TableSelectableProps = { rows, selectedO , onOptionClick: (row) => void };
 function MyTableSelectable({ rows, selectedO, onOptionClick }: TableSelectableProps) {
@@ -58,8 +69,8 @@ export default function Themes() {
     Gens.push(i2);
     const [selIt, setSelIt] = useState(Gens[0]);
     const [selRow, setSelRow] = useState("");
-    const [selRowU, setSelRowU] = useState(undefined);
-    const [selRow0, setSelRow0] = useState(Gens[0]);
+    const [selRowU, _] = useState(undefined);
+    const [selRow0, _s] = useState(Gens[0]);
 
     const SelUnsel = function (row) {
         console.log("old selected: "+selRow.id + ", actual: " + row.id);
@@ -75,6 +86,8 @@ export default function Themes() {
 
     console.log("Themes returns ...");
     return (<>
+        <ComboBoxIdName options={Gens} onOptionSelection={(option) => setSelIt(option)} />
+        <p>Selected Gen item in combobox: {selIt.name}</p>
         <MyTableSelectable rows={Gens} selectedO={selRow} onOptionClick={(row) => SelUnsel(row)} />
         <p>Selected row id: {selRow && selRow.id}</p>
         <p>Selected row U id: {selRowU && selRowU.id}</p>
