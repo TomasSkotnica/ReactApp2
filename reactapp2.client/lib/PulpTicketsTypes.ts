@@ -5,11 +5,11 @@ export type IdNameItem = {
 
 export type ComboBoxIdNameProps<IdNameItem> = { options: IdNameItem[], onOptionSelection: (item: IdNameItem) => void };
 
-export type SpSearchIdCriteria {
+export type SpSearchIdCriteria = {
     fltGeneration?: number,
 }
 
-export type SpSearchPanelProps {
+export type SpSearchPanelProps = {
     searchClicked: (criteria: SpSearchIdCriteria) => void,
 };
 

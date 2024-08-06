@@ -83,8 +83,9 @@ function ServicePack() {
         let uri = 'api/PSRItems';
         if (criteria != undefined) {
             if (criteria.fltGeneration != undefined)
-                uri += '?gen=' + criteria.fltGeneration;
+                uri += '?genid=' + criteria.fltGeneration;
         }
+        console.log(uri);
         const response = await fetch(uri);
         const data = await response.json();
         setPsrItems(data);
@@ -111,7 +112,7 @@ function ServicePack() {
     }
 
     async function addForms() {
-        const toSaveItem = {gen: "Forms", release: "20.0.5", patchset: "20.0.5-0010", unixBuild: true };
+        const toSaveItem = {genid:1, gen: "Forms", release: "20.0.5", patchset: "20.0.5-0010", unixBuild: true };
         fetch('api/PSRItems/', {
             method: 'POST',
             headers: {

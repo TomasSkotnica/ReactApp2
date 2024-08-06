@@ -4,6 +4,7 @@ namespace ReactApp2.Server.Models;
 
 public class PsrItem
 {
+    public int GenId { get; set; }
     public string Gen { get; set; }
     public string Release { get; set; }
     [Key]

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useState, useEffect } from 'react';
 
 import { IdNameItem, ComboBoxIdNameProps, SpSearchIdCriteria, SpSearchPanelProps } from "./../../../lib/PulpTicketsTypes.ts";

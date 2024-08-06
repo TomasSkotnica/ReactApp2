@@ -48,6 +48,16 @@ namespace ReactApp2.Server.Controllers
             {
                 predicate = predicate.And(x => x.Gen == gen);
             }
+            string genids = HttpContext.Request.Query["genid"];
+            if (!string.IsNullOrEmpty(genids))
+            {
+                int genid;
+                Int32.TryParse(genids, out genid);
+                if (genid > 0)
+                {
+                    predicate = predicate.And(x => x.GenId == genid);
+                }
+            }
             return await _context.PsrItems.Where(predicate).ToListAsync();
         }
 
