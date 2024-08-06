@@ -72,6 +72,12 @@ export default function Themes() {
     const [selRowU, _] = useState(undefined);
     const [selRow0, _s] = useState(Gens[0]);
 
+    const GensNull: IdNameItem[] = [];
+    const n0: IdNameItem = { id: null, name: "-select-", desc: "" }; GensNull.push(n0);
+    const n1: IdNameItem = { id: 1, name: "Form", desc: "oracle forms" }; GensNull.push(n1);
+    const n2: IdNameItem = { id: 2, name: "Deskt", desc: "C++ client" }; GensNull.push(n2);
+    const [selGenNull, setSelGenNull] = useState(GensNull[0]);
+
     const SelUnsel = function (row) {
         console.log("old selected: "+selRow.id + ", actual: " + row.id);
         if (selRow && selRow.id && row.id === selRow.id) {
@@ -86,8 +92,8 @@ export default function Themes() {
 
     console.log("Themes returns ...");
     return (<>
-        <ComboBoxIdName options={Gens} onOptionSelection={(option) => setSelIt(option)} />
-        <p>Selected Gen item in combobox: {selIt.name}</p>
+        <ComboBoxIdName options={GensNull} onOptionSelection={(option) => setSelGenNull(option)} />
+        <p>Selected Gen item in combobox: {selGenNull.name}</p>
         <MyTableSelectable rows={Gens} selectedO={selRow} onOptionClick={(row) => SelUnsel(row)} />
         <p>Selected row id: {selRow && selRow.id}</p>
         <p>Selected row U id: {selRowU && selRowU.id}</p>
