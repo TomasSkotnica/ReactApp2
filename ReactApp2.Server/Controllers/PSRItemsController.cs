@@ -78,6 +78,16 @@ namespace ReactApp2.Server.Controllers
                 return new string[] { };
         }
 
+        [HttpGet("releasesOfGenId/{genid}")]
+        public async Task<ActionResult<IEnumerable<string>>> GetReleases(int genid)
+        {
+            if (genid == 1)
+                return new string[] { "21.0.5", "20.0.5" };
+            else if (genid == 2)
+                return new string[] { "21.0.1", "20.0.2" };
+            else
+                return new string[] { };
+        }
         [HttpGet("spacks/{rel}")]
         public async Task<ActionResult<IEnumerable<string>>> GetSpacks(string rel)
         {
