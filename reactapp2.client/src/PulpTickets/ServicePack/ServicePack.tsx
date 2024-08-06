@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 
 //import SpSearchPanel from './SpSearchPanel.tsx';
 //import SpSearchCriteria from './SpSearchPanel.tsx';
+import { IdNameItem, ComboBoxIdNameProps, SpSearchIdCriteria, SpSearchPanelProps } from "./../../../lib/PulpTicketsTypes.ts";
+
 import PsrItem from './PsrItem.ts';
 import SpGrid from './SpGrid.tsx';
-
+import SpSearchPanel from './SpSearchPanel.tsx';
 export interface SpSearchCriteria {
     fltGeneration: string,
 }
@@ -13,7 +15,7 @@ interface SpSearchPanelProps {
     searchClicked: (criteria: SpSearchCriteria) => void,
 };
 
-function SpSearchPanel(props: SpSearchPanelProps) {
+function SpSearchPanel1(props: SpSearchPanelProps) {
     const [fltGeneration, set_fltGeneration] = useState('');
     const [fltRelease, set_fltRelease] = useState('');
 
@@ -76,11 +78,12 @@ function SpSearchPanel(props: SpSearchPanelProps) {
 function ServicePack() {
     const [psrItems, setPsrItems] = useState<PsrItem[]>([]);
 
-    async function LoadPsrItems(criteria: SpSearchCriteria | undefined) {
+    async function LoadPsrItems(criteria: SpSearchIdCriteria | undefined) {
         console.log("----------- LoadPsrItems");
         let uri = 'api/PSRItems';
         if (criteria != undefined) {
-            uri += '?gen=' + criteria.fltGeneration;
+            if (criteria.fltGeneration != undefined)
+                uri += '?gen=' + criteria.fltGeneration;
         }
         const response = await fetch(uri);
         const data = await response.json();
@@ -91,7 +94,7 @@ function ServicePack() {
     useEffect(() => {
         LoadPsrItems(undefined);
     }, []);
-    async function searchClicked(criteria: SpSearchCriteria) {
+    async function searchClicked1(criteria: SpSearchCriteria) {
         console.log("----------- Search clicked: gen=" + criteria.fltGeneration);
         LoadPsrItems(criteria);
     //    let uri = 'api/PSRItems';
@@ -100,6 +103,11 @@ function ServicePack() {
     //    const response = await fetch(uri);
     //    const data = await response.json();
     //    setPsrItems(data);
+    }
+
+    async function searchClicked(criteria: SpSearchIdCriteria) {
+        console.log("----------- Search clicked: gen=" + criteria.fltGeneration);
+        LoadPsrItems(criteria);
     }
 
     async function addForms() {
