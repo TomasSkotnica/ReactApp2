@@ -1,0 +1,49 @@
+
+    <body>
+        <script>
+
+    function getukoly() { return [
+        {p:1, t:"pozvat dedu", r:"Ondra", f:true},
+        {p:5, t:"koupit neco", r:"ja", f:true},
+        {p:3, t:"koupit v Hrusce", r:"ja", f:true},
+        {p:3, t:"koupit v Kauflandu", r:"ja", f:false},
+        {p:3, t:"koupit v Albertu", r:"Ondra", f:true},
+        {p:4, t:"prinest", r:"ja", f:true},
+        {p:4, t:"koupit ostatni", r:"ja", f:false},
+        {p:3, t:"upect", r:"ty", f:true},
+        {p:2, t:"uvarit obed", r:"ty", f:false},
+        {p:2, t:"uvarit polevku", r:"ty", f:true},
+        {p:4, t:"uvarit caj", r:"ja", f:false},
+        {p:2, t:"uvarit oslavu", r:"Ondra", f:true},
+        {p:9, t:"snist", r:"my", f:false},
+    ]};
+        ukoly = getukoly();
+        console.log(ukoly);
+        function PocetPodleStavReseni(ukoly, stav){return ukoly.filter(u=>u.f === stav).length};
+        function VypisPodleStavReseni(ukoly, stav){return ukoly.filter(u=>u.f === stav)};
+        function StavReseniNedokoncene(ukoly){return ukoly.filter(u=>!u.f)};
+        var dokonceneP = PocetPodleStavReseni(ukoly, true);
+        var dokonceneV = VypisPodleStavReseni(ukoly, true);
+        console.log("dokoncene");
+        console.log(dokonceneV);
+        console.log(dokonceneP);
+        console.log("nedokoncene");
+        console.log(StavReseniNedokoncene(ukoly));
+
+        var RazeniPrioritaVzestupne = function(ukoly){
+            return ukoly.sort((a,b) => {return a.p - b.p})
+        }
+        console.log(RazeniPrioritaVzestupne(ukoly));
+
+        console.log("vsechno splneno ?");
+        console.log(ukoly.every(u=>u.f));
+        console.log("alespon jeden ?");
+        console.log(ukoly.some(u=>u.f));
+        console.log(ukoly);
+        
+
+//        ukoly.filter(u=>u.f === stav).length
+    
+
+        </script>
+    </body>

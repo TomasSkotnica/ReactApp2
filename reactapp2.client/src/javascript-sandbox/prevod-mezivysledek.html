@@ -1,0 +1,34 @@
+
+    <body>
+        <script>
+
+    function getukoly() { return [
+        {t:"koupit", r:"ja"},
+        {t:"upect", r:"ty"},
+        {t:"snist", r:"on"},
+    ]};
+    ukoly = getukoly();
+    ukoly2 = getukoly();
+    original = getukoly();
+    console.log("ukoly");
+    console.log(ukoly);
+    console.log("original");
+    console.log(original);
+    prevedeneTvojeNaMe = ukoly2.filter(u => u.r === "ty").map(u => {u.r="ja"; return u});
+    console.log("prevedeneTvojeNaMe");
+    console.log(prevedeneTvojeNaMe);
+    ukoly.filter(u => u.r === "ja").map(u => {u.r="ty"; return u});
+    function wait3s(){
+        var ms = 3000 + new Date().getTime();
+        while (new Date() < ms) {}
+        console.log("wait3s finished");
+    }
+    wait3s();
+
+    console.log("ukoly");
+    console.log("moje prevedene na tvoje");
+    console.log(ukoly);
+    
+
+        </script>
+    </body>

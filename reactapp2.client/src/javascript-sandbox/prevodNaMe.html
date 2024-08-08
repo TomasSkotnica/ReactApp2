@@ -1,0 +1,25 @@
+
+    <body>
+        <script>
+console.log("console.log(ukoly);");
+console.log("kdyz je volam na zacatku a na konci, vzdy vypise stejne, tzn. koncove hodnoty")
+console.log("neyobrazi mezivysledek");
+console.log("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-**-**-");
+    function getukoly() { return [
+        {t:"koupit", r:"ja"},
+        {t:"upect", r:"ty"},
+        {t:"snist", r:"on"},
+    ]};
+    ukoly = getukoly();
+    original = getukoly();
+    console.log("ukoly - na zacatku vypise namisto pocatecniho stavu koncove hodnoty, viz original");
+    console.log(ukoly);
+    console.log("original");
+    console.log(original);
+    prevedeneTvojeNaMe = ukoly.filter(u => u.r === "ty").map(u => {u.r="ja"; return u});
+    console.log("prevedeneTvojeNaMe  = ukoly.filter(u => u.r === ty).map(u => {u.r=ja; return u});");
+    console.log(prevedeneTvojeNaMe);
+    console.log("ukoly maji tyto hodnoty:");
+    console.log(ukoly);
+        </script>
+    </body>

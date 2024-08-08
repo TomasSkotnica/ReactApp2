@@ -1,0 +1,47 @@
+
+    <body>
+        <script>
+console.log("console.log(ukoly);");
+console.log("kdyz je volam na zacatku a na konci, vzdy vypise stejne, tzn. koncove hodnoty")
+console.log("nezobrazi mezivysledek");
+console.log("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-**-**-");
+console.log("TAKZE :");
+console.log("chci-li videt meZivysledek pole, musim si ho natvrdo zkopirovat a zobrazit tuto kopii")
+console.log("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-**-**-");
+
+    function getukoly() { return [
+        {t:"koupit", r:"ja"},
+        {t:"upect", r:"ty"},
+        {t:"snist", r:"on"},
+    ]};
+    ukoly = getukoly();
+    original = getukoly();
+    console.log("ukoly - na zacatku vypise namisto pocatecniho stavu koncove hodnoty, viz original");
+    console.log(ukoly);
+    console.log("original");
+    console.log(original);
+    prevedeneTvojeNaMe = ukoly.filter(u => u.r === "ty").map(u => {u.r="ja"; return u});
+    console.log("prevedeneTvojeNaMe  = ukoly.filter(u => u.r === ty).map(u => {u.r=ja; return u});");
+    console.log(prevedeneTvojeNaMe);
+
+    kopie = [];
+    for (var i = 0; i<ukoly.length; i++){
+        kopie.push({text:ukoly[i].t, res:ukoly[i].r});
+    }
+    console.log("kopie maji tyto hodnoty:");
+    console.log(kopie);
+    ukoly.filter(u => u.r === "ja").map(u => {u.r="ty"; return u});
+    function wait3s(){
+        var ms = 3000 + new Date().getTime();
+        while (new Date() < ms) {}
+        console.log("wait3s finished");
+    }
+    wait3s();
+
+    console.log("ukoly");
+    console.log("moje prevedene na tvoje");
+    console.log(ukoly);
+    
+
+        </script>
+    </body>

@@ -1,0 +1,112 @@
+
+    <body>
+        <script>
+    // function greet(name){
+    //     name = name || "defualt";
+    //     console.log(name);
+    // }
+    // greet();
+    // greet("tom");
+
+    var cisla = [1,2,3,4,5,6];
+    console.log(cisla);
+    suma = 0;
+    cisla.map(c => {suma += c%2 === 0 ? c : 0})
+    console.log("suma sudych je " + suma);
+    console.log("suma sudych je " + cisla.filter(c => c%2 === 0).reduce((c1,c2) => c1+c2));
+
+        var c = {
+        name: "c object",
+        log: function (){
+            var self = this;
+            self.name = "updated c";
+            console.log(self);
+            var setname = function(newn){self.name = newn};
+            setname("new name");
+            console.log(self);
+        }
+    }
+    console.log("before c.log();");
+    c.log();
+    console.log("after c.log();");
+
+    var cthis = {
+        name: "cthis object",
+        log: function (){
+            this.name = "updated c";
+            console.log(this);
+            var setname = function(newn){console.log(this); this.name = newn; console.log(this);};
+            setname("new name");
+            console.log(this);
+        }
+    }
+    console.log("before cthis.log();");
+    cthis.log();
+    console.log("after cthis.log();");
+
+
+//     console.log(no + " - when variable is not typed at all");
+//     var no;
+//     console.log(no + " - when variable is declared by var");
+//     no = null;
+//     console.log(no + " - when variable is assigned to null");
+//     no = 1;
+//     console.log(no);
+
+//     no = null;
+//     console.log(no);
+//     if (no == undefined) console.log("no = null, if (no == undefined) = true");
+//     else console.log("no = null, if (no == undefined) = false");
+//     if (no === undefined) console.log("no = null, if (no === undefined) = true");
+//     else console.log("no = null, if (no === undefined) = false");
+
+//     no = undefined;
+//     console.log(no);
+//     if (no == undefined) console.log("no = undefined, if (no == undefined) = true");
+//     else console.log("no = undefined, if (no == undefined) = false");
+//     if (no === undefined) console.log("no = undefined, if (no === undefined) = true");
+//     else console.log("no = undefined, if (no === undefined) = false");
+
+// try{
+//     if (!co) console.log("!co is true")
+//     else console.log("!co is false");
+// } catch (v) {
+//     console.log("exception: " + v.message);
+// }
+//     var covar;
+//     if (!covar) console.log("covar = "+covar+", !covar is true")
+//     else console.log("covar = "+covar+", !covar is false");
+//     if (covar) console.log("covar = "+covar+", covar is true")
+//     else console.log("covar = "+covar+", covar is false");
+//     covar = null;
+//     if (!covar) console.log("covar = "+covar+", !covar is true")
+//     else console.log("covar = "+covar+", !covar is false");
+
+//     let colet;
+//     if (!colet) console.log("!colet is true")
+//     else console.log("!colet is false");
+
+//     const params = new URLSearchParams(window.location.search);
+//     const code = params.get("code");
+//     console.log("window.location.search = " + window.location.search);
+//     console.log("in code is >" + code+"<");
+
+//     if (!code) console.log("!code is true")
+//     else console.log("!code is false");
+
+    // function w3s(){
+    //     var ms = 3000 + new Date().getTime();
+    //     while (new Date() < ms) {}
+    //     console.log("w3s finished");
+    // }
+    // w3s();
+    // console.log("finished execution");
+    // async function w3sa(){
+    //     var ms = 3000 + new Date().getTime();
+    //     while (new Date() < ms) {}
+    //     console.log("w3sa finished");
+    // }
+    // w3sa();
+    // console.log("finished execution");
+        </script>
+    </body>
