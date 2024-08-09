@@ -11,12 +11,11 @@ export default function SpSearchPanel(props: SpSearchPanelProps) {
     const n2: IdNameItem = { id: 2, name: "Desktop"}; GensNull.push(n2);
     const [selGenNull, setSelGenNull] = useState(GensNull[0]);
 
-    const RelsNull: IdNameItem[] = [];
-    const r0: IdNameItem = { id: null, name: "-select-" }; RelsNull.push(r0);
-    const [selRelNull, setSelRelNull] = useState(RelsNull[0]);
-
     function handlerSearch(e) {
-        let crit: SpSearchIdCriteria = { fltGeneration: selGenNull.id !== undefined ? selGenNull.id : undefined };
+        let crit: SpSearchIdCriteria = {
+            fltGeneration: selGenNull.id !== undefined ? selGenNull.id : undefined,
+            fltRelease: fltRelease !== "-select-" ? fltRelease : undefined,
+        };
         console.log("creiterium  ......  " + crit.fltGeneration);
         props.searchClicked(crit);
     }
@@ -24,9 +23,9 @@ export default function SpSearchPanel(props: SpSearchPanelProps) {
     const [releases, setReleases] = useState([]);
     const [errorPanel, setErrorPanel] = useState("");
 
-    async function loadReleases(data) {
+    async function loadReleases() {
         console.log("-------- loadReleases");
-        fetch('api/PSRItems/releasesOfGenId/' + data, {
+        fetch('api/PSRItems/releases', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -38,17 +37,15 @@ export default function SpSearchPanel(props: SpSearchPanelProps) {
             })
             .then((result) => {
                 console.log(result);
-                result.map(item => RelsNull.push({id: item.id, name: item.id}));
-
-                result.splice(0, 0, "");
+                result.splice(0, 0, "-select-");
                 setReleases(result);
             })
             .catch((error) => {
-                setErrorPanel(error);
+                setErrorPanel("loadReleases():" + error);
             });
     };
 
-    useEffect(() => { loadReleases(""); }, []);
+    useEffect(() => { loadReleases(); }, []);
 
     const relItems = releases.map((item) => <option key={item} value={item}>{item}</option>);
 
@@ -62,11 +59,10 @@ export default function SpSearchPanel(props: SpSearchPanelProps) {
 
             <div>
                 <label>select release:</label>
-                <ComboBoxIdName options={RelsNull} onOptionSelection={(option) => setSelRelNull(option)} />
-                <p>Selected Gen item in combobox: {selGenNull.name}</p>
                 <select id="search-release" value={fltRelease} name="release" onChange={e => set_fltRelease(e.target.value)}>
                     {relItems}
                 </select>
+                <p>Selected release item in combobox: {fltRelease}</p>
             </div>
             <input type="text" value={errorPanel} placeholder="this is an error message field" onChange={() => { }} />
         </div>

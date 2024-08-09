@@ -7,6 +7,7 @@ export type ComboBoxIdNameProps<IdNameItem> = { options: IdNameItem[], onOptionS
 
 export type SpSearchIdCriteria = {
     fltGeneration?: number,
+    fltRelease?: string,
 }
 
 export type SpSearchPanelProps = {

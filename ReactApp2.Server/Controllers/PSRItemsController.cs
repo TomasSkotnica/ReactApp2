@@ -58,7 +58,14 @@ namespace ReactApp2.Server.Controllers
                     predicate = predicate.And(x => x.GenId == genid);
                 }
             }
-            return await _context.PsrItems.Where(predicate).ToListAsync();
+            string rel = HttpContext.Request.Query["release"];
+            if (!string.IsNullOrEmpty(rel))
+            {
+                predicate = predicate.And(x => x.Release == rel);
+            }
+            List<PsrItem> res = await _context.PsrItems.Where(predicate).ToListAsync();
+            return res;
+                
         }
 
         [HttpGet("releases")]
@@ -78,16 +85,18 @@ namespace ReactApp2.Server.Controllers
                 return new string[] { };
         }
 
-        [HttpGet("releasesOfGenId/{genid}")]
-        public async Task<ActionResult<IEnumerable<string>>> GetReleases(int genid)
-        {
-            if (genid == 1)
-                return new string[] { "21.0.5", "20.0.5" };
-            else if (genid == 2)
-                return new string[] { "21.0.1", "20.0.2" };
-            else
-                return new string[] { };
-        }
+        //[HttpGet("releasesOfGenId/{genid}")]
+        //public async Task<ActionResult<IEnumerable<string>>> GetReleases(int? genid)
+        //{
+        //    if (genid.HasValue) { 
+        //        if (genid == 1)
+        //            return new string[] { "21.0.5", "20.0.5" };
+        //        else if (genid == 2)
+        //            return new string[] { "21.0.1", "20.0.2" };
+        //    }
+        //    return new string[] { "21.0.5", "20.0.5", "21.0.1", "20.0.2" };
+        //}
+
         [HttpGet("spacks/{rel}")]
         public async Task<ActionResult<IEnumerable<string>>> GetSpacks(string rel)
         {

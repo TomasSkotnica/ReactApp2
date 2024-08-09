@@ -11,85 +11,39 @@ export interface SpSearchCriteria {
     fltGeneration: string,
 }
 
-interface SpSearchPanelProps {
-    searchClicked: (criteria: SpSearchCriteria) => void,
-};
-
-function SpSearchPanel1(props: SpSearchPanelProps) {
-    const [fltGeneration, set_fltGeneration] = useState('');
-    const [fltRelease, set_fltRelease] = useState('');
-
-    function handlerSearch(e) {
-        let crit: SpSearchCriteria = { fltGeneration: fltGeneration };
-        props.searchClicked(crit);
-    }
-
-    const [releases, setReleases] = useState([]);
+function ServicePack() {
     const [errorPanel, setErrorPanel] = useState("");
+    const [psrItems, setPsrItems] = useState<PsrItem[]>([]);
 
-    async function loadReleases(data) {
-        console.log("-------- loadReleases");
-        fetch('api/PSRItems/releases/' + data, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
+    async function LoadPsrItems(criteria: SpSearchIdCriteria | undefined) {
+        console.log("----------- LoadPsrItems");
+        var qi: string[] = [];
+        if (criteria != undefined) {
+            if (criteria.fltGeneration != undefined)
+                qi.push('genid=' + criteria.fltGeneration);
+            if (criteria.fltRelease != undefined)
+                qi.push('release=' + criteria.fltRelease);
+        }
+
+        let uri = 'api/PSRItems';
+        if (qi.length > 0) {
+            uri += '?' + qi[0];
+            for (var i = 1; i < qi.length; i++) { uri += '&' + qi[i]; }
+        }
+        console.log(uri);
+        await fetch(uri)
             .then((response) => {
                 if (!response.ok) { throw new Error(`HTTP error: ${response.status}`); }
                 return response.json();
             })
             .then((result) => {
+                setPsrItems(result);
                 console.log(result);
-                result.splice(0, 0, "");
-                setReleases(result);
             })
             .catch((error) => {
-                setErrorPanel(error);
+                setErrorPanel("LoadPsrItems() error: " + error);
+                console.log(error);
             });
-    };
-
-    useEffect(() => { loadReleases(""); }, []);
-
-    const relItems = releases.map((item) => <option key={item} value={item}>{item}</option>);
-
-    return (
-        <div className="psronemain-menu">
-            <button onClick={handlerSearch}>Search</button>
-            <button onClick={handlerSearch}>TODO: Show Selected</button>
-            <br></br>
-            <label>select generation:</label>
-            <select id="search-generation" value={fltGeneration} name="gen" onChange={e => set_fltGeneration(e.target.value)}>
-                <option value=""></option>
-                <option value="Forms">Forms</option>
-                <option value="Desktop">Desktop</option>
-            </select>
-            <div>
-                <label>select release:</label>
-                <select id="search-release" value={fltRelease} name="release" onChange={e => set_fltRelease(e.target.value)}>
-                    {relItems}
-                </select>
-            </div>
-            <input type="text" value={errorPanel} placeholder="this is an error message field" onChange={() => { } } />
-        </div>
-    );
-}
-
-function ServicePack() {
-    const [psrItems, setPsrItems] = useState<PsrItem[]>([]);
-
-    async function LoadPsrItems(criteria: SpSearchIdCriteria | undefined) {
-        console.log("----------- LoadPsrItems");
-        let uri = 'api/PSRItems';
-        if (criteria != undefined) {
-            if (criteria.fltGeneration != undefined)
-                uri += '?genid=' + criteria.fltGeneration;
-        }
-        console.log(uri);
-        const response = await fetch(uri);
-        const data = await response.json();
-        setPsrItems(data);
-        console.log(data);
     };
 
     useEffect(() => {
@@ -143,6 +97,7 @@ function ServicePack() {
                 rows={psrItems}
             />
             <button onClick={addForms}>Add Forms SP</button>
+            <input type="text" value={errorPanel} placeholder="this is an error message field" onChange={() => { }} />
         </div>
     );
 }
