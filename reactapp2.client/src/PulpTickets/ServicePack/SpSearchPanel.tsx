@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 
 import { IdNameItem, ComboBoxIdNameProps, SpSearchIdCriteria, SpSearchPanelProps } from "./../../../lib/PulpTicketsTypes.ts";
 import ComboBoxIdName from "./../Common/ComboBoxIdName";
+import ComboBoxSimple from "./../Common/ComboBoxSimple";
+import { DataJsonService } from "./../Common/DataJsonService";
+
 export default function SpSearchPanel(props: SpSearchPanelProps) {
     const [fltRelease, set_fltRelease] = useState('');
 
@@ -47,8 +50,6 @@ export default function SpSearchPanel(props: SpSearchPanelProps) {
 
     useEffect(() => { loadReleases(); }, []);
 
-    const relItems = releases.map((item) => <option key={item} value={item}>{item}</option>);
-
     return (
         <div className="psronemain-menu">
             <button onClick={handlerSearch}>Search</button>
@@ -57,13 +58,8 @@ export default function SpSearchPanel(props: SpSearchPanelProps) {
             <ComboBoxIdName options={GensNull} onOptionSelection={(option) => setSelGenNull(option)} />
             <p>Selected Gen item in combobox: {selGenNull.name}</p>
 
-            <div>
-                <label>select release:</label>
-                <select id="search-release" value={fltRelease} name="release" onChange={e => set_fltRelease(e.target.value)}>
-                    {relItems}
-                </select>
-                <p>Selected release item in combobox: {fltRelease}</p>
-            </div>
+            <ComboBoxSimple options={releases} selected={fltRelease} onOptionSelection={set_fltRelease}></ComboBoxSimple>
+
             <input type="text" value={errorPanel} placeholder="this is an error message field" onChange={() => { }} />
         </div>
     );
