@@ -28,12 +28,8 @@ export default function SpSearchPanel(props: SpSearchPanelProps) {
 
     async function loadReleases() {
         console.log("-------- loadReleases");
-        fetch('api/PSRItems/releases', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
+        const service = new DataJsonService();
+        service.GetReleases()
             .then((response) => {
                 if (!response.ok) { throw new Error(`HTTP error: ${response.status}`); }
                 return response.json();

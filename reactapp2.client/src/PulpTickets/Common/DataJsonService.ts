@@ -18,10 +18,8 @@
 //};
 
 export class DataJsonService {
-    public async GetReleases(): Promise<any> {
+    public async GetReleases(): Promise<Response> {
         console.log("DataJsonService.GetReleases()");
-        return new Promise(() => {
-            fetch('api/PSRItems/releases', { method: 'GET', headers: { 'Content-Type': 'application/json', }, });
-        });
+        return fetch('api/PSRItems/releases', { method: 'GET', headers: { 'Content-Type': 'application/json', }, });        
     }
 }
