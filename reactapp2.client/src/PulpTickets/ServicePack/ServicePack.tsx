@@ -63,7 +63,7 @@ function ServicePack() {
             body: JSON.stringify(toSaveItem),
         })
         .then((response) => {
-            if (!response.ok) { throw new Error(`HTTP error: ${response.status}`); }
+            if (!response.ok) { throw new Error(`HTTP error: ${response.status} ${response.text}`); }
             return response.json();
         })
         .then((result) => {
@@ -72,6 +72,7 @@ function ServicePack() {
             LoadPsrItems(undefined);
         })
         .catch((error) => {
+            setErrorPanel(error);
             console.log("AddForms(): " + error);
         });
     }

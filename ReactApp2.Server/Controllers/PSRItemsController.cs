@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ReactApp2.Server.Models;
 using LinqKit;
+using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -123,8 +124,16 @@ namespace ReactApp2.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<PsrItem>> Post([FromBody] PsrItem psrItem)
         {
-            _context.PsrItems.Add(psrItem);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.PsrItems.Add(psrItem);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest("Save failed.");
+            }
             // ControllerBase.CreatedAtAction vraci CreatedAtActionResult coz je 201
             // (action name, route values, value)
             // nebo se muze vracet (z GET) OkObjectResult volanim Ok(Object); 
