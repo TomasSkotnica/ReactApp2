@@ -6,8 +6,6 @@ import ComboBoxSimple from "./../Common/ComboBoxSimple";
 import { DataJsonService } from "./../Common/DataJsonService";
 
 export default function SpSearchPanel(props: SpSearchPanelProps) {
-    const [fltRelease, set_fltRelease] = useState('');
-
     const GensNull: IdNameItem[] = [];
     const n0: IdNameItem = { id: null, name: "-select-"}; GensNull.push(n0);
     const n1: IdNameItem = { id: 1, name: "Forms"}; GensNull.push(n1);
@@ -23,7 +21,9 @@ export default function SpSearchPanel(props: SpSearchPanelProps) {
         props.searchClicked(crit);
     }
 
+    const [fltRelease, set_fltRelease] = useState('');
     const [releases, setReleases] = useState([]);
+
     const [errorPanel, setErrorPanel] = useState("");
 
     async function loadReleases() {
@@ -35,7 +35,7 @@ export default function SpSearchPanel(props: SpSearchPanelProps) {
                 return response.json();
             })
             .then((result) => {
-                console.log(result);
+                console.log("result = " + result);
                 result.splice(0, 0, "-select-");
                 setReleases(result);
             })
@@ -51,11 +51,9 @@ export default function SpSearchPanel(props: SpSearchPanelProps) {
             <button onClick={handlerSearch}>Search</button>
             <br></br>
             <label>select generation:</label>
+            <p>Selected Gen item in combobox: is in selGenNull.name</p>
             <ComboBoxIdName options={GensNull} onOptionSelection={(option) => setSelGenNull(option)} />
-            <p>Selected Gen item in combobox: {selGenNull.name}</p>
-
-            <ComboBoxSimple options={releases} selected={fltRelease} onOptionSelection={set_fltRelease}></ComboBoxSimple>
-
+            <ComboBoxSimple options={releases} selected={fltRelease} onOptionSelection={set_fltRelease}></ComboBoxSimple>    
             <input type="text" value={errorPanel} placeholder="this is an error message field" onChange={() => { }} />
         </div>
     );

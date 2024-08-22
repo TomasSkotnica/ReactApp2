@@ -38,27 +38,15 @@ function ServicePack() {
             })
             .then((result) => {
                 setPsrItems(result);
-                console.log(result);
+                console.log("LoadPsrItems(): " + result);
             })
             .catch((error) => {
                 setErrorPanel("LoadPsrItems() error: " + error);
-                console.log(error);
+                console.log("LoadPsrItems() error: " + error);
             });
     };
 
-    useEffect(() => {
-        LoadPsrItems(undefined);
-    }, []);
-    async function searchClicked1(criteria: SpSearchCriteria) {
-        console.log("----------- Search clicked: gen=" + criteria.fltGeneration);
-        LoadPsrItems(criteria);
-    //    let uri = 'api/PSRItems';
-    //    //https://localhost:7208/api/PSRItems?gen= //    // works too
-    //    if (criteria.fltGeneration !== "") {uri += '?gen=' + criteria.fltGeneration; }
-    //    const response = await fetch(uri);
-    //    const data = await response.json();
-    //    setPsrItems(data);
-    }
+    useEffect(() => { LoadPsrItems(undefined); }, []);
 
     async function searchClicked(criteria: SpSearchIdCriteria) {
         console.log("----------- Search clicked: gen=" + criteria.fltGeneration);
@@ -66,7 +54,7 @@ function ServicePack() {
     }
 
     async function addForms() {
-        const toSaveItem = {genid:1, gen: "Forms", release: "20.0.5", patchset: "20.0.5-0010", unixBuild: true };
+        const toSaveItem = {genid:1, gen: "Forms", release: "20.0.5", patchset: "20.0.0-0010", unixBuild: true };
         fetch('api/PSRItems/', {
             method: 'POST',
             headers: {
@@ -79,13 +67,13 @@ function ServicePack() {
             return response.json();
         })
         .then((result) => {
-            console.log(result);
+            console.log("AddForms(): " + result);
+            console.log("Add forms is calling LoadPSr");
+            LoadPsrItems(undefined);
         })
         .catch((error) => {
-            console.log(error);
+            console.log("AddForms(): " + error);
         });
-
-        LoadPsrItems(undefined);
     }
 
     return (
@@ -93,9 +81,8 @@ function ServicePack() {
             <SpSearchPanel
                 searchClicked={searchClicked}
             />
-            <SpGrid
-                rows={psrItems}
-            />
+            
+            <SpGrid rows={psrItems} />
             <button onClick={addForms}>Add Forms SP</button>
             <input type="text" value={errorPanel} placeholder="this is an error message field" onChange={() => { }} />
         </div>
