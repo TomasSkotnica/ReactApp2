@@ -13,6 +13,8 @@ builder.Services.AddDbContext<ContactContext>(opt =>
     opt.UseInMemoryDatabase("ContactList"));
 builder.Services.AddDbContext<PSRContext>(opt =>
     opt.UseInMemoryDatabase("PSRList"));
+builder.Services.AddDbContext<ChallengeContext>(opt =>
+    opt.UseInMemoryDatabase("ChallengeDb"));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<CsvSerializer>();

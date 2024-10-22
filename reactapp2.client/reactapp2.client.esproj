@@ -9,7 +9,11 @@
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\Challenges\" />
     <Folder Include="src\others\" />
     <Folder Include="src\TicTacToe\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\rootChallenges.html" />
   </ItemGroup>
 </Project>
