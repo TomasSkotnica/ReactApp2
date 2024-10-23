@@ -3,7 +3,7 @@
     public class Challenge
     {
         public long Id { get; set; }
-        private int Challenger {  get; set; }
-        private int Challenged { get; set; }
+        public int Challenger {  get; set; }
+        public int Challenged { get; set; }
     }
 }
